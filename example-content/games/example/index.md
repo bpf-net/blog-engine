@@ -5,6 +5,12 @@ engine: Godot · wasm
 status: prototype
 cover: ./cover.png
 order: 1
+platform: browser (wasm)
+genre: example
+version: v0.1
+updated: 2026-11-05
+feedback: https://github.com/
+mobileNote: This game is made for keyboard and mouse — on a phone, turn the screen sideways or play on a computer.
 controls:
   - keys: [W, A, S, D]
     action: move

@@ -253,7 +253,23 @@ img { max-width: 100%; height: auto; }
 .game-page-header h1 { margin: 0; font-size: 60px; line-height: 1.02; letter-spacing: -0.02em; }
 .game-page-lead { margin: 10px 0 0; font-size: 19px; color: var(--fg-soft); }
 .game-page-header .pill { padding: 6px 12px; font-size: 13px; }
-.game-page-main { display: flex; flex-direction: column; gap: 40px; max-width: 720px; margin-top: 48px; }
+.game-page-body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px; margin-top: 48px; }
+.game-page-main { display: flex; flex-direction: column; gap: 40px; flex: 999 1 560px; min-width: 0; max-width: 720px; }
+.game-page-main:empty { display: none; }
+
+.game-info { flex: 1 1 260px; min-width: 0; padding: 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.game-info dl { display: flex; flex-direction: column; margin: 0; font-size: 15px; }
+.game-info dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-top: 1px solid var(--border); }
+.game-info dl > div:first-child { padding-top: 0; border-top: 0; }
+.game-info dl > div:last-child { padding-bottom: 0; }
+.game-info dt { color: var(--muted); }
+.game-info dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+.game-info dd.mono { font-family: var(--font-mono); }
+.game-info-feedback { display: flex; justify-content: center; margin-top: 20px; min-height: 44px; }
+.game-info dl + .game-info-feedback { margin-top: 20px; }
+.game-info > .game-info-feedback:first-child { margin-top: 0; }
+
+.mobile-note { display: none; margin: 0 0 12px; padding: 12px 14px; border: 1px solid var(--border-strong); border-radius: 8px; font-size: 14px; color: var(--fg-soft); }
 .game-page-main h2 { margin: 0 0 14px; font-size: 28px; line-height: 1.2; }
 .game-page-main .prose { max-width: none; }
 
@@ -470,6 +486,7 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
   .game-page-header h1 { font-size: 40px; }
   .player { aspect-ratio: auto !important; min-height: 260px; }
   .player-caption { display: none; }
+  .mobile-note { display: block; }
   .post-nav-next { grid-column: auto; }
   .prose { font-size: 17px; }
   pre { font-size: 13px; }

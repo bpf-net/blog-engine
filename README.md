@@ -91,7 +91,8 @@ The home page shows them as cards in a "Games in the browser" section below the 
 and each game gets a page at `/games/<id>/`: title, description, status pill and a player — the build loads in an
 iframe only after "Launch game"; "stop" unloads it, the corner button goes full screen. Under the player: "About the game" (the
 markdown body of the game file), "Controls" (`controls`) and "Devlog" — posts whose `game` field names this game,
-oldest first, numbered. Empty sections are hidden. The player script is included only on game pages.
+oldest first, numbered. Next to them an info panel (engine, platform, genre, version, updated) with an optional
+"Report a bug / feedback" button; `mobileNote` is shown above the player on narrow screens. Empty parts are hidden. The player script is included only on game pages.
 
 | Field | Type |
 | --- | --- |
@@ -103,6 +104,10 @@ oldest first, numbered. Empty sections are hidden. The player script is included
 | `src` | string, optional — URL of the game build, default `/games/<id>/play/` |
 | `threads` | boolean, default `false` — threaded build (needs COOP/COEP): the page links to it in a new tab instead of embedding |
 | `width`, `height` | numbers, default `16`, `9` — player aspect ratio |
+| `platform`, `genre`, `version` | string, optional — rows of the info panel (with `engine`) |
+| `updated` | date, optional — info panel row |
+| `feedback` | string, optional — URL of the "Report a bug / feedback" button |
+| `mobileNote` | string, optional — shown above the player on narrow screens |
 | `controls` | list, optional — `[{ keys: [W, A, S, D], action: move }]`, keys shown as `<kbd>` |
 | `cta` | string, default `Play` — link text on the card |
 | `order` | number, optional — lower first; the rest by title |

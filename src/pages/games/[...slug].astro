@@ -19,6 +19,14 @@ const { data } = game;
 const { Content } = await render(game);
 const hasBody = !!game.body?.trim();
 const devlog = await getDevlog(game.id);
+const info = [
+  ['Engine', data.engine],
+  ['Platform', data.platform],
+  ['Genre', data.genre],
+  ['Version', data.version, true],
+  ['Updated', data.updated && formatDate(data.updated), true],
+].filter((row): row is [string, string, boolean?] => !!row[1]);
+const hasAside = info.length > 0 || !!data.feedback;
 ---
 <Base title={data.title} description={data.description}>
   <p class="breadcrumb"><a href="/">~</a> / games / {game.id}</p>
@@ -32,7 +40,9 @@ const devlog = await getDevlog(game.id);
         <span class="pill tone-amber">{[data.status, data.draft && 'draft'].filter(Boolean).join(' · ')}</span>
       )}
     </header>
+    {data.mobileNote && <p class="mobile-note">{data.mobileNote}</p>}
     <GamePlayer src={gameSrc(game)} title={data.title} caption={data.engine} width={data.width} height={data.height} threads={data.threads} />
+    <div class="game-page-body">
     <div class="game-page-main">
       {hasBody && (
         <section aria-labelledby="h-about-game">
@@ -71,6 +81,22 @@ const devlog = await getDevlog(game.id);
           </ol>
         </section>
       )}
+    </div>
+    {hasAside && (
+      <aside class="game-info" aria-label="About this game">
+        {info.length > 0 && (
+          <dl>
+            {info.map(([label, value, mono]) => (
+              <div>
+                <dt>{label}</dt>
+                <dd class:list={{ mono }}>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {data.feedback && <a href={data.feedback} class="btn game-info-feedback">Report a bug / feedback</a>}
+      </aside>
+    )}
     </div>
   </article>
 </Base>

@@ -48,6 +48,15 @@ const games = defineCollection({
       src: z.string().optional(),
       /** Threaded build (needs COOP/COEP): the page links to it in a new tab instead of embedding. */
       threads: z.boolean().default(false),
+      /** Info panel on the game page (each row optional; `engine` above is shown there too). */
+      platform: z.string().optional(),
+      genre: z.string().optional(),
+      version: z.string().optional(),
+      updated: z.coerce.date().optional(),
+      /** URL for bug reports / feedback, shown as a button under the info panel. */
+      feedback: z.string().optional(),
+      /** Note shown above the player on narrow screens, e.g. "Made for keyboard and mouse". */
+      mobileNote: z.string().optional(),
       /** Shown as "Controls": e.g. [{ keys: [W, A, S, D], action: move the map }]. */
       controls: z.array(z.object({ keys: z.array(z.string()).min(1), action: z.string() })).default([]),
       /** Player aspect ratio. */
