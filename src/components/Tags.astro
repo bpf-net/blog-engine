@@ -2,11 +2,13 @@
 import { loadSiteConfig } from '../lib/site';
 
 interface Props {
-  tags: string[];
+  tags?: string[];
   class?: string;
 }
 
-const { tags, class: className } = Astro.props;
+// The schema defaults tags to [], but entries cached by a dev server started before
+// the field existed have none.
+const { tags = [], class: className } = Astro.props;
 const { tagTones } = loadSiteConfig();
 ---
 {tags.length > 0 && (
