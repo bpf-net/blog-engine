@@ -62,6 +62,10 @@ which is expected.
 
 ## Styling
 
-One `src/styles/global.css`: system font stack, ~42rem column, colours as CSS variables, dark variant via
-`prefers-color-scheme` only (no toggle, no JS). Code is highlighted by Shiki with `github-light` / `github-dark`
-switched by the same media query.
+Dark-only theme in one `src/styles/global.css` (colours as CSS variables on `:root`), no JS.
+
+- Fonts are self-hosted variable woff2 in `public/fonts/` (latin + latin-ext): Inter (text), Bricolage Grotesque
+  (headings), JetBrains Mono (logo, dates, code). All under SIL OFL 1.1, licence files next to them.
+- Code is highlighted at build time by Shiki with the `bpf-dark` theme from `src/lib/shiki-theme.ts`;
+  highlighted blocks get a small language strip.
+- The logo is `site.title`; the part after the last dot is shown in the accent colour (`bpf.dev` → bpf**.dev**`_`).

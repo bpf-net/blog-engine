@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import { fileURLToPath } from 'node:url';
 import { CONTENT_DIR, loadSiteConfig } from './src/lib/site.ts';
+import { bpfDark } from './src/lib/shiki-theme.ts';
 
 // Pin the resolved absolute path so bundled code (where import.meta.url points
 // into dist/) and the content loader see exactly the same directory.
@@ -16,7 +17,7 @@ export default defineConfig({
   integrations: [mdx()],
   markdown: {
     shikiConfig: {
-      themes: { light: 'github-light', dark: 'github-dark' },
+      theme: bpfDark,
     },
   },
   vite: {

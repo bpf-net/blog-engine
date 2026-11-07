@@ -2,7 +2,6 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { getPosts, formatDate, type Post } from '../../lib/posts';
-import { loadSiteConfig } from '../../lib/site';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -14,16 +13,21 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const site = loadSiteConfig();
 const { Content } = await render(post);
 ---
 <Base title={post.data.title} description={post.data.description}>
-  <article>
-    <h1>{post.data.title}</h1>
-    <p class="post-meta">
-      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, site.lang)}</time>
-      {post.data.draft && <span class="draft-label">szkic</span>}
-    </p>
-    <Content />
+  <p class="breadcrumb"><a href="/">~</a> / blog / {post.id}</p>
+  <article class="post">
+    <header class="post-header">
+      <h1>{post.data.title}</h1>
+      <p class="post-lead">{post.data.description}</p>
+      <p class="post-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        {post.data.draft && <span class="draft-label">szkic</span>}
+      </p>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
   </article>
 </Base>

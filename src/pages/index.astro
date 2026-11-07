@@ -1,25 +1,33 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getPosts, formatDate } from '../lib/posts';
-import { loadSiteConfig } from '../lib/site';
 
-const site = loadSiteConfig();
 const posts = await getPosts();
 ---
 <Base>
-  <h1>{site.title}</h1>
-  {posts.length === 0 ? (
-    <p>Nie ma jeszcze żadnych wpisów.</p>
-  ) : (
-    <ul class="post-list">
-      {posts.map((post) => (
-        <li>
-          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, site.lang)}</time>
-          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-          {post.data.draft && <span class="draft-label">szkic</span>}
-          <p>{post.data.description}</p>
-        </li>
-      ))}
-    </ul>
-  )}
+  <section class="home" aria-labelledby="h-posts">
+    <div class="section-head">
+      <h1 id="h-posts">Najnowsze wpisy</h1>
+    </div>
+    {posts.length === 0 ? (
+      <p class="empty">Nie ma jeszcze żadnych wpisów.</p>
+    ) : (
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id}/`} class="post-row">
+              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+              <span>
+                <span class="post-row-title">
+                  {post.data.title}
+                  {post.data.draft && <span class="draft-label">szkic</span>}
+                </span>
+                <span class="post-row-desc">{post.data.description}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
 </Base>

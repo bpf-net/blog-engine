@@ -8,6 +8,7 @@ export async function getPosts(): Promise<Post[]> {
   return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 
-export function formatDate(date: Date, lang: string): string {
-  return date.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric' });
+/** ISO date (YYYY-MM-DD), as shown in the design. */
+export function formatDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
 }
