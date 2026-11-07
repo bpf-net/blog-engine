@@ -8,15 +8,21 @@ import RelatedModule from '../../components/RelatedModule.astro';
 import { getPosts, formatDate, type Post } from '../../lib/posts';
 
 export async function getStaticPaths() {
+  // getPosts() is newest first: the older neighbour is "previous", the newer one "next".
   const posts = await getPosts();
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, prev: posts[i + 1], next: posts[i - 1] },
+  }));
 }
 
 interface Props {
   post: Post;
+  prev?: Post;
+  next?: Post;
 }
 
-const { post } = Astro.props;
+const { post, prev, next } = Astro.props;
 const { Content, headings } = await render(post);
 // The table of contents (and its small script) only on posts with at least two sections.
 const tocHeadings = headings.filter((h) => h.depth === 2);
@@ -51,4 +57,20 @@ const hasAside = showToc || !!related;
       )}
     </div>
   </article>
+  {(prev || next) && (
+    <nav class="post-nav" aria-label="More posts">
+      {prev && (
+        <a href={`/blog/${prev.id}/`} class="post-nav-link post-nav-prev" rel="prev">
+          <span class="post-nav-label">← previous</span>
+          <span class="post-nav-title">{prev.data.title}</span>
+        </a>
+      )}
+      {next && (
+        <a href={`/blog/${next.id}/`} class="post-nav-link post-nav-next" rel="next">
+          <span class="post-nav-label">next →</span>
+          <span class="post-nav-title">{next.data.title}</span>
+        </a>
+      )}
+    </nav>
+  )}
 </Base>

@@ -145,7 +145,7 @@ script highlights the section being read (without JS the links still work). The 
 ## Pages
 
 - `/` — blog title and post list (date, title, description), newest first.
-- `/blog/<id>/` — post.
+- `/blog/<id>/` — post, with links to the previous (older) and next (newer) post below it.
 - `404.html`.
 
 Output uses `build.format: 'directory'` (`…/index.html`).

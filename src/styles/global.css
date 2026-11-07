@@ -248,6 +248,17 @@ img { max-width: 100%; height: auto; }
 .prose { flex: 999 1 560px; min-width: 0; max-width: 720px; font-size: 18px; line-height: 1.75; color: var(--fg-prose); }
 .prose h2, .prose h3 { scroll-margin-top: 24px; }
 
+/* Previous / next */
+.post-nav {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  max-width: 720px; margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--border);
+}
+.post-nav-link { display: block; padding: 18px 20px; border: 1px solid var(--border); border-radius: 10px; color: var(--fg); text-decoration: none; }
+.post-nav-link:hover { border-color: var(--border-strong); color: var(--fg); }
+.post-nav-next { grid-column: 2; text-align: right; }
+.post-nav-label { display: block; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.post-nav-title { display: block; margin-top: 6px; font-weight: 600; }
+
 /* Post aside: table of contents + related module */
 .post-aside { flex: 1 1 220px; min-width: 0; align-self: stretch; font-family: var(--font-mono); font-size: 14px; }
 .post-aside-inner { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 32px; }
@@ -398,6 +409,8 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
   .post-header h1 { font-size: 34px; }
   .post-lead { font-size: 18px; }
   .post-body { margin-top: 36px; }
+  .post-nav { grid-template-columns: 1fr; margin-top: 40px; }
+  .post-nav-next { grid-column: auto; }
   .prose { font-size: 17px; }
   pre { font-size: 13px; }
   .not-found h1 { font-size: 88px; }
