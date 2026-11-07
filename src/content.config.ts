@@ -83,6 +83,12 @@ const modules = defineCollection({
     /** Pill text, e.g. "in progress". */
     status: z.string().optional(),
     statusTone: z.enum(TONES).default('muted'),
+    /** Grey labels on the module page, e.g. [OpenMage, SEO, open source]. */
+    tags: z.array(z.string().min(1)).default([]),
+    /** Source code URL: "Code on GitHub" button on the module page. */
+    repo: z.string().optional(),
+    /** "Roadmap" button target, e.g. a GitHub project board. */
+    roadmapHref: z.string().optional(),
     /** Card link; defaults to /modules/<id>/. */
     href: z.string().optional(),
     order: z.number().optional(),

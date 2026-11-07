@@ -321,6 +321,18 @@ kbd {
 .player[data-state="running"] .player-stage { display: block; }
 .player[data-state="running"] .player-stop { display: inline-flex; }
 
+/* Module page */
+.module-labels { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.module-labels .pill { padding: 4px 10px; }
+.module-page-header h1 { margin: 0; font-family: var(--font-mono); font-weight: 700; font-size: 52px; line-height: 1.1; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.module-page-lead { margin: 16px 0 0; max-width: 680px; font-size: 20px; color: var(--fg-soft); }
+.module-page-platform { margin: 12px 0 0; font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.module-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.module-actions .btn { gap: 10px; }
+.btn-blue { border-color: var(--info); background: var(--info); }
+.btn-blue:hover { border-color: #B9DBFF; background: #B9DBFF; }
+.module-page-body { margin-top: 56px; }
+
 /* Previous / next */
 .post-nav {
   display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
@@ -484,6 +496,7 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
   .post-body { margin-top: 36px; }
   .post-nav { grid-template-columns: 1fr; margin-top: 40px; }
   .game-page-header h1 { font-size: 40px; }
+  .module-page-header h1 { font-size: 28px; }
   .player { aspect-ratio: auto !important; min-height: 260px; }
   .player-caption { display: none; }
   .mobile-note { display: block; }

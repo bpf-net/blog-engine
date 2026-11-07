@@ -116,7 +116,8 @@ oldest first, numbered. Next to them an info panel (engine, platform, genre, ver
 ## Modules
 
 Each module is a file in `CONTENT_DIR/modules/` (`modules/<id>.md`). The home page shows them as cards in a
-section below the games (hidden when there are none).
+section below the games (hidden when there are none), and each module gets a page at `/modules/<id>/`: status
+and label pills, the name, description, platform, "Code on GitHub" / "Roadmap" buttons and the markdown body.
 
 | Field | Type |
 | --- | --- |
@@ -124,6 +125,9 @@ section below the games (hidden when there are none).
 | `platform` | string, optional — e.g. `Magento 2.4.x · PHP 8.4` |
 | `status` | string, optional — pill text, e.g. `in progress` |
 | `statusTone` | `muted` (default), `plain`, `accent`, `amber`, `blue` — pill colour |
+| `tags` | list, optional — grey labels on the module page, e.g. `[OpenMage, SEO, open source]` |
+| `repo` | string, optional — source URL; button "Code on GitHub" (or "Source code" for other hosts) |
+| `roadmapHref` | string, optional — "Roadmap" button target |
 | `href` | string, optional — card link, default `/modules/<id>/` |
 | `order`, `draft` | as for games |
 

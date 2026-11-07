@@ -1,0 +1,55 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getModules, type ModuleEntry } from '../../lib/modules';
+
+export async function getStaticPaths() {
+  const modules = await getModules();
+  return modules.map((mod) => ({ params: { slug: mod.id }, props: { mod } }));
+}
+
+interface Props {
+  mod: ModuleEntry;
+}
+
+const { mod } = Astro.props;
+const { data } = mod;
+const { Content } = await render(mod);
+const hasBody = !!mod.body?.trim();
+const isGitHub = !!data.repo && /^https:\/\/github\.com\//.test(data.repo);
+---
+<Base title={data.title} description={data.description}>
+  <p class="breadcrumb"><a href="/">~</a> / modules / {mod.id}</p>
+  <article class="module-page">
+    <header class="module-page-header">
+      {(data.status || data.tags.length > 0 || data.draft) && (
+        <ul class="module-labels" aria-label="Status and labels">
+          {data.status && <li class={`pill tone-${data.statusTone}`}>{data.status}</li>}
+          {data.draft && <li class="pill tone-amber">draft</li>}
+          {data.tags.map((t) => <li class="pill tone-plain">{t}</li>)}
+        </ul>
+      )}
+      <h1>{data.title}</h1>
+      <p class="module-page-lead">{data.description}</p>
+      {data.platform && <p class="module-page-platform">{data.platform}</p>}
+      {(data.repo || data.roadmapHref) && (
+        <div class="module-actions">
+          {data.repo && (
+            <a href={data.repo} class="btn btn-primary btn-blue">
+              {isGitHub && (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              )}
+              {isGitHub ? 'Code on GitHub' : 'Source code'}
+            </a>
+          )}
+          {data.roadmapHref && <a href={data.roadmapHref} class="btn">Roadmap</a>}
+        </div>
+      )}
+    </header>
+    {hasBody && (
+      <div class="prose module-page-body">
+        <Content />
+      </div>
+    )}
+  </article>
+</Base>
