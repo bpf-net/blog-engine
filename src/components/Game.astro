@@ -1,6 +1,10 @@
 ---
+import { gameBuildUrl } from '../lib/games';
+
 interface Props {
   slug: string;
+  /** Build URL; default /games/<slug>/play/. */
+  src?: string;
   title?: string;
   width?: number;
   height?: number;
@@ -9,7 +13,7 @@ interface Props {
 }
 
 const { slug, title = slug, width = 960, height = 540, poster, threads = false } = Astro.props;
-const src = `/games/${slug}/`;
+const src = Astro.props.src ?? gameBuildUrl(slug);
 const posterStyle = poster ? `background-image: url(${poster})` : undefined;
 ---
 <figure class="game" style={`aspect-ratio: ${width} / ${height};`}>

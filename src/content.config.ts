@@ -40,8 +40,15 @@ const games = defineCollection({
       status: z.string().optional(),
       /** Screenshot next to the file, e.g. ./cover.png (16:10 works best). */
       cover: image().optional(),
-      /** Card link; defaults to the game itself at /games/<id>/. */
+      /** Card link; defaults to the game page /games/<id>/. */
       href: z.string().optional(),
+      /** URL of the game build loaded in the player; default /games/<id>/play/. */
+      src: z.string().optional(),
+      /** Threaded build (needs COOP/COEP): the page links to it in a new tab instead of embedding. */
+      threads: z.boolean().default(false),
+      /** Player aspect ratio. */
+      width: z.number().positive().default(16),
+      height: z.number().positive().default(9),
       /** Link text on the card. */
       cta: z.string().default('Play'),
       /** Lower first; games without it go last, by title. */

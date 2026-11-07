@@ -86,7 +86,10 @@ They use the accent colour; `tagTones` in `site.json` colours individual tags wi
 ## Games
 
 Each game is a file in `CONTENT_DIR/games/` — `games/<id>.md` or `games/<id>/index.md` with a screenshot next to it.
-The home page shows them as cards in a "Games in the browser" section below the post list (hidden when there are none).
+The home page shows them as cards in a "Games in the browser" section below the post list (hidden when there are none),
+and each game gets a page at `/games/<id>/`: title, description, status pill and a player — the build loads in an
+iframe only after "Launch game"; "stop" unloads it, the corner button goes full screen. The markdown body of the game
+file is rendered under the player. The player script is included only on game pages.
 
 | Field | Type |
 | --- | --- |
@@ -94,12 +97,13 @@ The home page shows them as cards in a "Games in the browser" section below the 
 | `engine` | string, optional — tech line, e.g. `Godot · wasm` |
 | `status` | string, optional — e.g. `prototype` |
 | `cover` | image, optional — relative path, e.g. `./cover.png`; 16:10 fits best; without it a dotted placeholder |
-| `href` | string, optional — card link, default `/games/<id>/` (where the game build is served) |
+| `href` | string, optional — card link, default the game page `/games/<id>/` |
+| `src` | string, optional — URL of the game build, default `/games/<id>/play/` |
+| `threads` | boolean, default `false` — threaded build (needs COOP/COEP): the page links to it in a new tab instead of embedding |
+| `width`, `height` | numbers, default `16`, `9` — player aspect ratio |
 | `cta` | string, default `Play` — link text on the card |
 | `order` | number, optional — lower first; the rest by title |
 | `draft` | boolean, default `false` — like posts |
-
-The body of a game file is not used yet.
 
 ## Modules
 
@@ -162,7 +166,8 @@ import Game from '@components/Game.astro';
 
 | Prop | Default | Meaning |
 | --- | --- | --- |
-| `slug` | required | game is served from `/games/<slug>/` |
+| `slug` | required | game build is loaded from `/games/<slug>/play/` (the same default as game pages) |
+| `src` | — | build URL instead of the default |
 | `title` | `slug` | iframe title / link text |
 | `width`, `height` | `960`, `540` | aspect ratio of the frame |
 | `poster` | — | background image URL for the launch button |

@@ -1,0 +1,40 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import GamePlayer from '../../components/GamePlayer.astro';
+import { getGames, gameSrc, type GameEntry } from '../../lib/games';
+
+export async function getStaticPaths() {
+  const games = await getGames();
+  return games.map((game) => ({ params: { slug: game.id }, props: { game } }));
+}
+
+interface Props {
+  game: GameEntry;
+}
+
+const { game } = Astro.props;
+const { data } = game;
+const { Content } = await render(game);
+const hasBody = !!game.body?.trim();
+---
+<Base title={data.title} description={data.description}>
+  <p class="breadcrumb"><a href="/">~</a> / games / {game.id}</p>
+  <article class="game-page">
+    <header class="game-page-header">
+      <div>
+        <h1>{data.title}</h1>
+        <p class="game-page-lead">{data.description}</p>
+      </div>
+      {(data.status || data.draft) && (
+        <span class="pill tone-amber">{[data.status, data.draft && 'draft'].filter(Boolean).join(' · ')}</span>
+      )}
+    </header>
+    <GamePlayer src={gameSrc(game)} title={data.title} caption={data.engine} width={data.width} height={data.height} threads={data.threads} />
+    {hasBody && (
+      <div class="prose game-page-body">
+        <Content />
+      </div>
+    )}
+  </article>
+</Base>

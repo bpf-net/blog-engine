@@ -5,5 +5,6 @@ engine: Canvas 2D
 status: in progress
 href: /blog/2026-11-gra/
 cta: Read more
+threads: true
 order: 2
 ---

@@ -1,0 +1,77 @@
+---
+interface Props {
+  src: string;
+  title: string;
+  /** Shown under the launch button, e.g. "Godot · wasm". */
+  caption?: string;
+  width: number;
+  height: number;
+  threads?: boolean;
+}
+
+const { src, title, caption, width, height, threads = false } = Astro.props;
+const note = [caption, threads ? 'opens in a new tab' : 'loads only after you click'].filter(Boolean).join(' · ');
+---
+<div class="player" data-game-player data-state="idle" style={`aspect-ratio: ${width} / ${height};`}>
+  <div class="player-launch">
+    {threads ? (
+      <a class="game-button" href={src} target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>
+        Open the game
+      </a>
+    ) : (
+      <button type="button" class="game-button" data-start data-src={src} data-title={title}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+        Launch game
+      </button>
+    )}
+    <span class="player-caption">{note}</span>
+  </div>
+  <div class="player-stage" data-stage></div>
+  {!threads && (
+    <div class="player-controls">
+      <button type="button" class="player-btn player-stop" data-stop>stop</button>
+      <button type="button" class="player-btn player-icon" data-fullscreen aria-label="Full screen">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+      </button>
+    </div>
+  )}
+</div>
+
+<script>
+  for (const player of document.querySelectorAll<HTMLElement>('[data-game-player]')) {
+    const start = player.querySelector<HTMLButtonElement>('[data-start]');
+    const stage = player.querySelector<HTMLElement>('[data-stage]')!;
+    const stop = player.querySelector<HTMLButtonElement>('[data-stop]');
+    const fullscreen = player.querySelector<HTMLButtonElement>('[data-fullscreen]');
+    if (!start) continue;
+
+    const launch = () => {
+      if (player.dataset.state === 'running') return;
+      const iframe = document.createElement('iframe');
+      iframe.src = start.dataset.src!;
+      iframe.title = start.dataset.title ?? '';
+      iframe.allow = 'fullscreen; gamepad; autoplay';
+      stage.replaceChildren(iframe);
+      player.dataset.state = 'running';
+      iframe.focus();
+    };
+
+    start.addEventListener('click', launch);
+    // Removing the iframe unloads the game (sound, CPU) and brings the launch button back.
+    stop?.addEventListener('click', () => {
+      if (document.fullscreenElement === player) document.exitFullscreen();
+      stage.replaceChildren();
+      player.dataset.state = 'idle';
+      start.focus();
+    });
+    fullscreen?.addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        launch();
+        player.requestFullscreen?.();
+      }
+    });
+  }
+</script>
