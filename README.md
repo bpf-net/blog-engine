@@ -16,11 +16,11 @@ path once, in `src/lib/site.ts`, and that same path is used by `astro.config.mjs
 
 | Item | Rule |
 | --- | --- |
-| `site.json` | `url`, `title`, `author`, `lang`, `nav`, `footerLinks`, `hero`, `tagTones`; missing file or field = defaults |
+| `site.json` | `url`, `title`, `author`, `lang`, `nav`, `footerLinks`, `hero`, `tagTones`, `modules`; missing file or field = defaults |
 | Single-file post | `2026-11-slug.md` or `.mdx` → `/blog/2026-11-slug/` |
 | Folder post | `2026-11-slug/index.md(x)` + images next to it, linked relatively (`![](./image.png)`) |
 | `_anything` | any file or folder starting with `_` is ignored (templates, notes) |
-| `games/` | reserved for the games collection (below), never read as posts |
+| `games/`, `modules/` | reserved for the games and modules collections (below), never read as posts |
 
 Frontmatter (validated; an invalid post fails the build):
 
@@ -98,6 +98,26 @@ The home page shows them as cards in a "Games in the browser" section below the 
 | `draft` | boolean, default `false` — like posts |
 
 The body of a game file is not used yet.
+
+## Modules
+
+Each module is a file in `CONTENT_DIR/modules/` (`modules/<id>.md`). The home page shows them as cards in a
+section below the games (hidden when there are none).
+
+| Field | Type |
+| --- | --- |
+| `title`, `description` | string, required — `title` is the module name, shown in mono |
+| `platform` | string, optional — e.g. `Magento 2.4.x · PHP 8.4` |
+| `status` | string, optional — pill text, e.g. `in progress` |
+| `statusTone` | `muted` (default), `plain`, `accent`, `amber`, `blue` — pill colour |
+| `href` | string, optional — card link, default `/modules/<id>/` |
+| `order`, `draft` | as for games |
+
+The section heading defaults to "Modules"; `site.json` can change it and add a link on the right:
+
+```json
+"modules": { "title": "Magento modules", "link": { "label": "github.com/you", "href": "https://github.com/you" } }
+```
 
 ## Pages
 

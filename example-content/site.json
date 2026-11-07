@@ -67,5 +67,12 @@
   },
   "tagTones": {
     "gamedev": "amber"
+  },
+  "modules": {
+    "title": "Modules",
+    "link": {
+      "label": "github.com",
+      "href": "https://github.com/"
+    }
   }
 }

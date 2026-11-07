@@ -1,0 +1,30 @@
+---
+import { getModules, moduleHref } from '../lib/modules';
+import { loadSiteConfig } from '../lib/site';
+
+const modules = await getModules();
+const { modules: section } = loadSiteConfig();
+---
+{modules.length > 0 && (
+  <section id="modules" class="home-section" aria-labelledby="h-modules">
+    <div class="section-head">
+      <h2 id="h-modules">{section.title}</h2>
+      {section.link && <a href={section.link.href} class="section-link tone-blue">{section.link.label} →</a>}
+    </div>
+    <ul class="module-cards">
+      {modules.map((mod) => (
+        <li>
+          <a href={moduleHref(mod)} class="module-card">
+            <span class="module-card-head">
+              <span class="module-card-title">{mod.data.title}</span>
+              {mod.data.status && <span class={`pill tone-${mod.data.statusTone}`}>{mod.data.status}</span>}
+              {mod.data.draft && <span class="draft-label">draft</span>}
+            </span>
+            {mod.data.platform && <span class="module-card-platform">{mod.data.platform}</span>}
+            <span class="module-card-desc">{mod.data.description}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

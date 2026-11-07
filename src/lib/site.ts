@@ -26,6 +26,13 @@ export interface SiteConfig {
   hero?: Hero;
   /** Colour of individual tags (without "#"); others use the accent. */
   tagTones: Record<string, Tone>;
+  /** Heading and optional header link of the home page modules section. */
+  modules: SectionConfig;
+}
+
+export interface SectionConfig {
+  title: string;
+  link?: NavLink;
 }
 
 export interface NavLink {
@@ -61,6 +68,7 @@ const defaults: SiteConfig = {
   nav: [],
   footerLinks: [],
   tagTones: {},
+  modules: { title: 'Modules' },
 };
 
 function validateLinks(links: unknown, field: string, file: string): NavLink[] {
@@ -106,6 +114,17 @@ function validateTagTones(tones: unknown, file: string): Record<string, Tone> {
   return tones as Record<string, Tone>;
 }
 
+function validateSection(section: unknown, field: string, fallback: SectionConfig, file: string): SectionConfig {
+  if (section === undefined) return fallback;
+  const ok =
+    isObj(section) &&
+    (section.title === undefined || typeof section.title === 'string') &&
+    (section.link === undefined ||
+      (isObj(section.link) && typeof section.link.label === 'string' && typeof section.link.href === 'string'));
+  if (!ok) throw new Error(`${file}: "${field}" must be { "title"?: string, "link"?: { "label", "href" } }`);
+  return { ...fallback, ...(section as Partial<SectionConfig>) };
+}
+
 export function loadSiteConfig(): SiteConfig {
   const file = path.join(CONTENT_DIR, 'site.json');
   if (!fs.existsSync(file)) return { ...defaults };
@@ -117,5 +136,6 @@ export function loadSiteConfig(): SiteConfig {
     footerLinks: validateLinks(data.footerLinks, 'footerLinks', file),
     hero: validateHero(data.hero, file),
     tagTones: validateTagTones(data.tagTones, file),
+    modules: validateSection(data.modules, 'modules', defaults.modules, file),
   };
 }

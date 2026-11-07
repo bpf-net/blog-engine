@@ -102,7 +102,12 @@ img { max-width: 100%; height: auto; }
 
 /* Home: game cards */
 .home-section { padding: 56px 0 24px; }
-.home-section .section-head { margin-bottom: 28px; }
+.home-section .section-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin-bottom: 28px;
+}
+.section-link { padding: 10px 0; font-family: var(--font-mono); font-size: 14px; text-decoration: none; overflow-wrap: anywhere; }
+.section-link:hover { color: var(--fg); }
 .game-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin: 0; padding: 0; list-style: none; }
 .game-card {
   display: flex; flex-direction: column; height: 100%;
@@ -124,6 +129,26 @@ img { max-width: 100%; height: auto; }
 .game-card-desc { color: var(--muted); font-size: 15px; }
 .game-card-cta { margin-top: auto; padding-top: 6px; font-weight: 600; color: var(--game); }
 .game-card:hover .game-card-cta { color: var(--game-hover); }
+
+/* Home: module cards */
+.module-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.module-card {
+  display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 22px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  color: var(--fg); text-decoration: none;
+}
+.module-card:hover { border-color: var(--border-strong); color: var(--fg); }
+.module-card:focus-visible { outline-color: var(--info); }
+.module-card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.module-card-head .draft-label { margin-left: 0; }
+.module-card-title { font-family: var(--font-mono); font-weight: 700; font-size: 17px; overflow-wrap: anywhere; }
+.module-card-platform { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.module-card-desc { color: var(--fg-soft); font-size: 15px; }
+.pill {
+  display: inline-block; padding: 3px 8px; border: 1px solid currentColor; border-radius: 99px;
+  font-family: var(--font-mono); font-size: 12px; line-height: 1.4;
+}
+.pill.tone-muted, .pill.tone-plain { border-color: var(--border-strong); }
 
 /* Home: hero */
 .hero { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 48px; padding: 88px 0 72px; }

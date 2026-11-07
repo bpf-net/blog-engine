@@ -4,7 +4,7 @@ import { z } from 'astro/zod';
 import { CONTENT_DIR } from './lib/site';
 
 /** Folders under CONTENT_DIR that hold other collections, not posts. */
-const RESERVED_DIRS = ['games'];
+const RESERVED_DIRS = ['games', 'modules'];
 
 const tag = z.string().regex(/^[\p{L}\p{N}][\p{L}\p{N}-]*$/u, 'tag: letters, digits and hyphens only, no "#" or spaces');
 
@@ -46,4 +46,24 @@ const games = defineCollection({
     }),
 });
 
-export const collections = { blog, games };
+const TONES = ['plain', 'muted', 'accent', 'amber', 'blue'] as const;
+
+const modules = defineCollection({
+  loader: glob({ pattern: ['**/*.{md,mdx}', '!**/_*', '!**/_*/**'], base: `${CONTENT_DIR}/modules` }),
+  schema: z.object({
+    /** Module name, shown in mono, e.g. "openmage-hreflang". */
+    title: z.string(),
+    description: z.string(),
+    /** Platform / version line, e.g. "Magento 2.4.x · PHP 8.4". */
+    platform: z.string().optional(),
+    /** Pill text, e.g. "in progress". */
+    status: z.string().optional(),
+    statusTone: z.enum(TONES).default('muted'),
+    /** Card link; defaults to /modules/<id>/. */
+    href: z.string().optional(),
+    order: z.number().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, games, modules };
