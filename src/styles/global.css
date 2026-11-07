@@ -84,7 +84,14 @@ img { max-width: 100%; height: auto; }
 .logo:hover { color: var(--fg); }
 
 .site-footer { border-top: 1px solid var(--border); margin-top: 56px; }
-.site-footer .container { padding-top: 28px; padding-bottom: 40px; font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.site-footer-inner {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px;
+  padding-top: 28px; padding-bottom: 40px;
+  font-family: var(--font-mono); font-size: 13px; color: var(--muted);
+}
+.footer-links { display: flex; flex-wrap: wrap; gap: 0 8px; margin: 0 -10px 0 0; padding: 0; list-style: none; }
+.footer-links a { display: block; padding: 10px; color: var(--muted); text-decoration: none; }
+.footer-links a:hover { color: var(--fg); }
 
 /* Home: post list */
 .home { padding: 72px 0 24px; }
@@ -240,6 +247,7 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
   .container { padding-left: 20px; padding-right: 20px; }
   .site-header-inner { padding-top: 12px; padding-bottom: 12px; }
   .site-nav { margin-left: -12px; }
+  .footer-links { margin-left: -10px; }
   .home { padding-top: 40px; }
   .section-head h1 { font-size: 26px; }
   .post-row { grid-template-columns: 1fr; gap: 6px; padding: 20px 8px; }

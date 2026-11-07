@@ -6,5 +6,9 @@
   "nav": [
     { "label": "posts", "href": "/" },
     { "label": "github", "href": "https://github.com/" }
+  ],
+  "footerLinks": [
+    { "label": "GitHub", "href": "https://github.com/" },
+    { "label": "RSS", "href": "/rss.xml" }
   ]
 }

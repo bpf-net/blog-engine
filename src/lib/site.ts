@@ -20,6 +20,8 @@ export interface SiteConfig {
   lang: string;
   /** Header navigation links, in order. Empty = no navigation. */
   nav: NavLink[];
+  /** Footer links, in order (next to the copyright). Empty = none. */
+  footerLinks: NavLink[];
 }
 
 export interface NavLink {
@@ -33,20 +35,26 @@ const defaults: SiteConfig = {
   author: 'Author',
   lang: 'en',
   nav: [],
+  footerLinks: [],
 };
 
-function validateNav(nav: unknown, file: string): NavLink[] {
-  if (nav === undefined) return [];
+function validateLinks(links: unknown, field: string, file: string): NavLink[] {
+  if (links === undefined) return [];
   const ok =
-    Array.isArray(nav) &&
-    nav.every((l) => l && typeof l === 'object' && typeof l.label === 'string' && typeof l.href === 'string');
-  if (!ok) throw new Error(`${file}: "nav" must be an array of { "label": string, "href": string }`);
-  return nav as NavLink[];
+    Array.isArray(links) &&
+    links.every((l) => l && typeof l === 'object' && typeof l.label === 'string' && typeof l.href === 'string');
+  if (!ok) throw new Error(`${file}: "${field}" must be an array of { "label": string, "href": string }`);
+  return links as NavLink[];
 }
 
 export function loadSiteConfig(): SiteConfig {
   const file = path.join(CONTENT_DIR, 'site.json');
   if (!fs.existsSync(file)) return { ...defaults };
   const data = JSON.parse(fs.readFileSync(file, 'utf8')) as Partial<SiteConfig>;
-  return { ...defaults, ...data, nav: validateNav(data.nav, file) };
+  return {
+    ...defaults,
+    ...data,
+    nav: validateLinks(data.nav, 'nav', file),
+    footerLinks: validateLinks(data.footerLinks, 'footerLinks', file),
+  };
 }
