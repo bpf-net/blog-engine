@@ -1,0 +1,14 @@
+---
+interface Props {
+  text: string;
+}
+
+const escape = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Plain text with inline `code` only — no other markdown.
+const html = escape(Astro.props.text).replace(/`([^`]+)`/g, '<code>$1</code>');
+---
+<aside class="tldr" aria-label="Summary">
+  <p class="tldr-label">TL;DR</p>
+  <p class="tldr-text" set:html={html} />
+</aside>

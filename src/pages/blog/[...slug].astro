@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Tags from '../../components/Tags.astro';
+import Tldr from '../../components/Tldr.astro';
 import { getPosts, formatDate, type Post } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -29,6 +30,7 @@ const { Content } = await render(post);
       </p>
     </header>
     <div class="prose">
+      {post.data.tldr && <Tldr text={post.data.tldr} />}
       <Content />
     </div>
   </article>

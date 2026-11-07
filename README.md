@@ -30,6 +30,7 @@ Frontmatter (validated; an invalid post fails the build):
 | `description` | string, required (post list + meta description) |
 | `pubDate` | date, required |
 | `tags` | list, optional — `[magento2, open-source]`: letters, digits, hyphens, no `#` |
+| `tldr` | string, optional — summary box above the body; `` `code` `` in backticks, no other markdown |
 | `draft` | boolean, default `false` — shown in `astro dev` with a "draft" label, excluded from the build |
 
 ## Navigation

@@ -21,6 +21,8 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     // Written without "#": letters, digits and hyphens, e.g. [magento2, open-source].
     tags: z.array(tag).default([]),
+    /** Short summary shown in a box above the post body; `code` in backticks is supported. */
+    tldr: z.string().optional(),
   }),
 });
 
