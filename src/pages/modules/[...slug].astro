@@ -18,6 +18,8 @@ const { data } = mod;
 const { Content } = await render(mod);
 const hasBody = !!mod.body?.trim();
 const isGitHub = !!data.repo && /^https:\/\/github\.com\//.test(data.repo);
+const roadmapHref = data.roadmapHref ?? (data.roadmap.length > 0 ? '#roadmap' : undefined);
+const hasMain = !!data.install || hasBody || data.features.length > 0 || data.compatibility.length > 0 || data.roadmap.length > 0;
 ---
 <Base title={data.title} description={data.description}>
   <p class="breadcrumb"><a href="/">~</a> / modules / {mod.id}</p>
@@ -33,7 +35,7 @@ const isGitHub = !!data.repo && /^https:\/\/github\.com\//.test(data.repo);
       <h1>{data.title}</h1>
       <p class="module-page-lead">{data.description}</p>
       {data.platform && <p class="module-page-platform">{data.platform}</p>}
-      {(data.repo || data.roadmapHref) && (
+      {(data.repo || roadmapHref) && (
         <div class="module-actions">
           {data.repo && (
             <a href={data.repo} class="btn btn-primary btn-blue">
@@ -43,11 +45,11 @@ const isGitHub = !!data.repo && /^https:\/\/github\.com\//.test(data.repo);
               {isGitHub ? 'Code on GitHub' : 'Source code'}
             </a>
           )}
-          {data.roadmapHref && <a href={data.roadmapHref} class="btn">Roadmap</a>}
+          {roadmapHref && <a href={roadmapHref} class="btn">Roadmap</a>}
         </div>
       )}
     </header>
-    {(data.install || hasBody) && (
+    {hasMain && (
       <div class="module-page-main">
         {data.install && (
           <section aria-labelledby="h-install">
@@ -59,6 +61,54 @@ const isGitHub = !!data.repo && /^https:\/\/github\.com\//.test(data.repo);
           <div class="prose">
             <Content />
           </div>
+        )}
+        {data.features.length > 0 && (
+          <section aria-labelledby="h-features">
+            <h2 id="h-features">What it does</h2>
+            <ul class="features">
+              {data.features.map((f) => (
+                <li>
+                  <span class="features-title">{f.title}</span>
+                  {f.text && <span class="features-text">{f.text}</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {data.compatibility.length > 0 && (
+          <section aria-labelledby="h-compat">
+            <h2 id="h-compat">Compatibility</h2>
+            <div class="table-scroll">
+              <table class="compat">
+                <thead>
+                  <tr><th scope="col">Platform</th><th scope="col">Versions</th><th scope="col">PHP</th><th scope="col">Status</th></tr>
+                </thead>
+                <tbody>
+                  {data.compatibility.map((row) => (
+                    <tr>
+                      <th scope="row">{row.platform}</th>
+                      <td class="mono">{row.versions ?? '—'}</td>
+                      <td class="mono">{row.php ?? '—'}</td>
+                      <td class={`tone-${row.statusTone}`}>{row.status ?? '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+        {data.roadmap.length > 0 && (
+          <section id="roadmap" aria-labelledby="h-roadmap">
+            <h2 id="h-roadmap">Roadmap</h2>
+            <ol class="roadmap">
+              {data.roadmap.map((m) => (
+                <li class={`roadmap-${m.stage}`}>
+                  <span class="roadmap-stage">{m.stage}</span>
+                  <span class="roadmap-text">{m.href ? <a href={m.href}>{m.text}</a> : m.text}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
         )}
       </div>
     )}

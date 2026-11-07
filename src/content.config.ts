@@ -91,6 +91,24 @@ const modules = defineCollection({
     roadmapHref: z.string().optional(),
     /** Install command shown with a copy button, e.g. "composer require vendor/module". */
     install: z.string().optional(),
+    /** "What it does": feature tiles. */
+    features: z.array(z.object({ title: z.string(), text: z.string().optional() })).default([]),
+    /** "Compatibility" table rows. */
+    compatibility: z
+      .array(
+        z.object({
+          platform: z.string(),
+          versions: z.string().optional(),
+          php: z.string().optional(),
+          status: z.string().optional(),
+          statusTone: z.enum(TONES).default('muted'),
+        }),
+      )
+      .default([]),
+    /** "Roadmap" milestones; the Roadmap button scrolls here unless roadmapHref is set. */
+    roadmap: z
+      .array(z.object({ stage: z.enum(['done', 'now', 'later']), text: z.string(), href: z.string().optional() }))
+      .default([]),
     /** Card link; defaults to /modules/<id>/. */
     href: z.string().optional(),
     order: z.number().optional(),

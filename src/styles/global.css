@@ -336,6 +336,34 @@ kbd {
 .module-page-main h2 { margin: 0 0 14px; font-size: 28px; line-height: 1.2; }
 .module-page-main .prose { max-width: none; }
 
+.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.features li { padding: 18px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+.features-title { display: block; font-weight: 600; }
+.features-text { display: block; margin-top: 4px; color: var(--muted); font-size: 15px; }
+
+.table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+.compat { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 15px; }
+.compat th, .compat td { padding: 12px 16px; text-align: left; }
+.compat thead tr { background: var(--surface); }
+.compat thead th { font-weight: 600; }
+.compat tbody th { font-weight: 400; }
+.compat tbody tr { border-top: 1px solid var(--border); }
+.compat .mono { font-family: var(--font-mono); }
+.compat .tone-muted { color: var(--muted); }
+
+.roadmap { margin: 0 0 0 6px; padding: 0; list-style: none; border-left: 2px solid var(--border); }
+.roadmap li { position: relative; display: flex; align-items: baseline; gap: 14px; padding: 10px 0 10px 20px; }
+.roadmap li::before {
+  content: ''; position: absolute; left: -7px; top: 18px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--border-strong);
+}
+.roadmap-stage { min-width: 70px; font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.roadmap-done::before { background: var(--accent); border-color: var(--accent); }
+.roadmap-done .roadmap-stage { color: var(--accent); }
+.roadmap-now::before { border-color: var(--accent); }
+.roadmap-now .roadmap-stage { color: var(--fg); }
+.roadmap-later .roadmap-text { color: var(--fg-soft); }
+
 .copy-command {
   display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 6px 6px 6px 18px;
   background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
