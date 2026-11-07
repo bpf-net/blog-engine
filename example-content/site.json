@@ -10,5 +10,20 @@
   "footerLinks": [
     { "label": "GitHub", "href": "https://github.com/" },
     { "label": "RSS", "href": "/rss.xml" }
-  ]
+  ],
+  "hero": {
+    "eyebrow": "// an example blog",
+    "title": "Notes worth\nkeeping.",
+    "text": "Short posts about the things I build. Edit the hero in site.json, or remove it to show only the post list.",
+    "buttons": [
+      { "label": "Read posts", "href": "#latest" },
+      { "label": "GitHub", "href": "https://github.com/" }
+    ],
+    "terminal": [
+      { "cmd": "ls ~/example.dev" },
+      { "out": [{ "text": "posts/", "tone": "accent" }, { "text": "games/", "tone": "amber" }, { "text": "notes/", "tone": "blue" }] },
+      { "cmd": "cat about.md | head -1" },
+      { "out": "Developer. Writes things down." }
+    ]
+  }
 }

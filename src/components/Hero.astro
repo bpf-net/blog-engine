@@ -1,0 +1,47 @@
+---
+import type { Hero, TerminalSpan } from '../lib/site';
+
+interface Props {
+  hero: Hero;
+}
+
+const { hero } = Astro.props;
+const titleLines = hero.title.split('\n');
+const buttons = hero.buttons ?? [];
+const spans = (out: string | TerminalSpan[]): TerminalSpan[] => (typeof out === 'string' ? [{ text: out }] : out);
+---
+<section class="hero">
+  <div class="hero-main">
+    {hero.eyebrow && <p class="hero-eyebrow">{hero.eyebrow}</p>}
+    <h1 class="hero-title">
+      {titleLines.map((line, i) => (
+        <>{i > 0 && <br />}{line}</>
+      ))}
+    </h1>
+    {hero.text && <p class="hero-text">{hero.text}</p>}
+    {buttons.length > 0 && (
+      <div class="hero-actions">
+        {buttons.map((b, i) => (
+          <a href={b.href} class={i === 0 ? 'btn btn-primary' : 'btn'}>{b.label}</a>
+        ))}
+      </div>
+    )}
+  </div>
+  {hero.terminal && hero.terminal.length > 0 && (
+    <div class="terminal" aria-hidden="true">
+      <div class="terminal-dots"><span></span><span></span><span></span></div>
+      {hero.terminal.map((line) =>
+        'cmd' in line ? (
+          <div><span class="tone-muted">$</span> {line.cmd}</div>
+        ) : (
+          <div class="terminal-out">
+            {spans(line.out).map((s, i) => (
+              <>{i > 0 && '  '}<span class={`tone-${s.tone ?? 'plain'}`}>{s.text}</span></>
+            ))}
+          </div>
+        )
+      )}
+      <div><span class="tone-muted">$</span> <span class="tone-accent">▍</span></div>
+    </div>
+  )}
+</section>

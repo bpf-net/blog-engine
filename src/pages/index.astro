@@ -1,13 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
 import { getPosts, formatDate } from '../lib/posts';
+import { loadSiteConfig } from '../lib/site';
 
+const { hero } = loadSiteConfig();
 const posts = await getPosts();
+// With a hero, its headline is the page's h1 and the post list heading drops to h2.
+const ListHeading = hero ? 'h2' : 'h1';
 ---
 <Base>
-  <section class="home" aria-labelledby="h-posts">
+  {hero && <Hero hero={hero} />}
+  <section id="latest" class:list={['home', { 'home-after-hero': hero }]} aria-labelledby="h-posts">
     <div class="section-head">
-      <h1 id="h-posts">Latest posts</h1>
+      <ListHeading id="h-posts">Latest posts</ListHeading>
     </div>
     {posts.length === 0 ? (
       <p class="empty">No posts yet.</p>
