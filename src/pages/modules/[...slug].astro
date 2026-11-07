@@ -2,23 +2,39 @@
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import CopyCommand from '../../components/CopyCommand.astro';
-import { getModules, type ModuleEntry } from '../../lib/modules';
+import { getModules, moduleHref, type ModuleEntry } from '../../lib/modules';
+import { getPostsAboutModule } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const modules = await getModules();
-  return modules.map((mod) => ({ params: { slug: mod.id }, props: { mod } }));
+  return modules.map((mod) => ({
+    params: { slug: mod.id },
+    props: { mod, others: modules.filter((m) => m.id !== mod.id) },
+  }));
 }
 
 interface Props {
   mod: ModuleEntry;
+  others: ModuleEntry[];
 }
 
-const { mod } = Astro.props;
+const { mod, others } = Astro.props;
 const { data } = mod;
 const { Content } = await render(mod);
 const hasBody = !!mod.body?.trim();
 const isGitHub = !!data.repo && /^https:\/\/github\.com\//.test(data.repo);
 const roadmapHref = data.roadmapHref ?? (data.roadmap.length > 0 ? '#roadmap' : undefined);
+const posts = await getPostsAboutModule(mod.id);
+// "https://github.com/bpf-net/x" → "bpf-net/x"; other hosts keep host + path.
+const repoLabel =
+  data.repo &&
+  (data.repo.replace(/^https?:\/\/(www\.)?(github\.com\/)?/, '').replace(/\/$/, '') || new URL(data.repo).host);
+const info = [
+  ['Release', data.version],
+  ['License', data.license],
+].filter((row): row is [string, string] => !!row[1]);
+const hasInfo = info.length > 0 || !!data.repo;
+const hasAside = hasInfo || others.length > 0 || posts.length > 0;
 const hasMain = !!data.install || hasBody || data.features.length > 0 || data.compatibility.length > 0 || data.roadmap.length > 0;
 ---
 <Base title={data.title} description={data.description}>
@@ -49,6 +65,7 @@ const hasMain = !!data.install || hasBody || data.features.length > 0 || data.co
         </div>
       )}
     </header>
+    <div class="module-page-body">
     {hasMain && (
       <div class="module-page-main">
         {data.install && (
@@ -112,5 +129,45 @@ const hasMain = !!data.install || hasBody || data.features.length > 0 || data.co
         )}
       </div>
     )}
+    {hasAside && (
+      <aside class="module-aside" aria-label="Module details">
+        {hasInfo && (
+          <dl class="info-panel">
+            {info.map(([label, value]) => (
+              <div><dt>{label}</dt><dd class="mono">{value}</dd></div>
+            ))}
+            {data.repo && (
+              <div><dt>Repository</dt><dd class="mono"><a href={data.repo}>{repoLabel}</a></dd></div>
+            )}
+          </dl>
+        )}
+        {others.length > 0 && (
+          <div>
+            <p class="aside-label">Other modules</p>
+            <ul class="aside-cards">
+              {others.map((m) => (
+                <li>
+                  <a href={moduleHref(m)} class="related-card">
+                    <span class="related-card-title">{m.data.title}</span>
+                    {(m.data.platform || m.data.status) && (
+                      <span class="related-card-meta">{[m.data.platform, m.data.status].filter(Boolean).join(' · ')}</span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {posts.length > 0 && (
+          <div>
+            <p class="aside-label">Written about</p>
+            <ul class="aside-links">
+              {posts.map((p) => <li><a href={`/blog/${p.id}/`}>{p.data.title} →</a></li>)}
+            </ul>
+          </div>
+        )}
+      </aside>
+    )}
+    </div>
   </article>
 </Base>

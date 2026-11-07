@@ -26,6 +26,8 @@ roadmap:
   - stage: later
     text: Ideas — issues on GitHub
     href: https://github.com/
+version: v0.1.0
+license: MIT
 install: composer require example/example-module
 ---
 

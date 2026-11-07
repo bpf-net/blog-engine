@@ -118,7 +118,8 @@ oldest first, numbered. Next to them an info panel (engine, platform, genre, ver
 Each module is a file in `CONTENT_DIR/modules/` (`modules/<id>.md`). The home page shows them as cards in a
 section below the games (hidden when there are none), and each module gets a page at `/modules/<id>/`: status
 and label pills, the name, description, platform, "Code on GitHub" / "Roadmap" buttons, "Installation", the
-markdown body, "What it does", "Compatibility" and "Roadmap" (empty sections are hidden). The copy button needs JS and the Clipboard API; without them it stays hidden and the command can be
+markdown body, "What it does", "Compatibility" and "Roadmap", and a sidebar: release / licence / repository panel,
+"Other modules" and "Written about" (posts whose `module` field names this module). Empty parts are hidden. The copy button needs JS and the Clipboard API; without them it stays hidden and the command can be
 selected by hand. Its script is included only on module pages with `install`.
 
 | Field | Type |
@@ -130,6 +131,7 @@ selected by hand. Its script is included only on module pages with `install`.
 | `tags` | list, optional — grey labels on the module page, e.g. `[OpenMage, SEO, open source]` |
 | `repo` | string, optional — source URL; button "Code on GitHub" (or "Source code" for other hosts) |
 | `roadmapHref` | string, optional — "Roadmap" button target |
+| `version`, `license` | string, optional — "Release" and "License" rows of the sidebar panel |
 | `features` | list, optional — `[{ title, text? }]`, tiles under "What it does" |
 | `compatibility` | list, optional — `[{ platform, versions?, php?, status?, statusTone? }]`, table rows |
 | `roadmap` | list, optional — `[{ stage: done \| now \| later, text, href? }]`; the "Roadmap" button scrolls here unless `roadmapHref` is set |

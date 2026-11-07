@@ -89,6 +89,9 @@ const modules = defineCollection({
     repo: z.string().optional(),
     /** "Roadmap" button target, e.g. a GitHub project board. */
     roadmapHref: z.string().optional(),
+    /** Info panel on the module page: release and licence (repo comes from `repo`). */
+    version: z.string().optional(),
+    license: z.string().optional(),
     /** Install command shown with a copy button, e.g. "composer require vendor/module". */
     install: z.string().optional(),
     /** "What it does": feature tiles. */

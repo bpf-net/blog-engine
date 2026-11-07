@@ -14,6 +14,11 @@ export async function getDevlog(gameId: string): Promise<Post[]> {
   return posts.filter((p) => p.data.game?.id === gameId).reverse();
 }
 
+/** Posts that name this module in their `module` field, newest first. */
+export async function getPostsAboutModule(moduleId: string): Promise<Post[]> {
+  return (await getPosts()).filter((p) => p.data.module?.id === moduleId);
+}
+
 /** ISO date (YYYY-MM-DD), as shown in the design. */
 export function formatDate(date: Date): string {
   return date.toISOString().slice(0, 10);
