@@ -8,6 +8,7 @@ order: 1
 tags: [Framework, SEO, open source]
 repo: https://github.com/
 roadmapHref: https://github.com/
+install: composer require example/example-module
 ---
 
 The body of `modules/example-module.md` is shown on the module page at `/modules/example-module/`.

@@ -43,6 +43,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 html {
   background: var(--bg);
@@ -331,7 +332,17 @@ kbd {
 .module-actions .btn { gap: 10px; }
 .btn-blue { border-color: var(--info); background: var(--info); }
 .btn-blue:hover { border-color: #B9DBFF; background: #B9DBFF; }
-.module-page-body { margin-top: 56px; }
+.module-page-main { display: flex; flex-direction: column; gap: 44px; max-width: 720px; margin-top: 56px; }
+.module-page-main h2 { margin: 0 0 14px; font-size: 28px; line-height: 1.2; }
+.module-page-main .prose { max-width: none; }
+
+.copy-command {
+  display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 6px 6px 6px 18px;
+  background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
+}
+.copy-command pre { flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; background: none; font-size: 15px; line-height: 1.5; }
+.copy-button { flex: none; min-width: 104px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Previous / next */
 .post-nav {
@@ -497,6 +508,7 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
   .post-nav { grid-template-columns: 1fr; margin-top: 40px; }
   .game-page-header h1 { font-size: 40px; }
   .module-page-header h1 { font-size: 28px; }
+  .copy-command pre { font-size: 13px; }
   .player { aspect-ratio: auto !important; min-height: 260px; }
   .player-caption { display: none; }
   .mobile-note { display: block; }

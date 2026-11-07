@@ -1,0 +1,38 @@
+---
+interface Props {
+  command: string;
+}
+
+const { command } = Astro.props;
+---
+<div class="copy-command" data-copy-command>
+  <pre><span class="tone-muted" aria-hidden="true">$ </span><code>{command}</code></pre>
+  <!-- Shown by the script only when the Clipboard API is available. -->
+  <button type="button" class="player-btn copy-button" data-copy hidden>copy</button>
+  <span class="visually-hidden" aria-live="polite" data-copy-status></span>
+</div>
+
+<script>
+  for (const box of document.querySelectorAll<HTMLElement>('[data-copy-command]')) {
+    const button = box.querySelector<HTMLButtonElement>('[data-copy]');
+    const status = box.querySelector<HTMLElement>('[data-copy-status]');
+    const text = box.querySelector('code')?.textContent ?? '';
+    if (!button || !navigator.clipboard) continue;
+    button.hidden = false;
+    let timer: number | undefined;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'copied';
+        if (status) status.textContent = 'Command copied to clipboard';
+      } catch {
+        button.textContent = 'failed';
+      }
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        button.textContent = 'copy';
+        if (status) status.textContent = '';
+      }, 2000);
+    });
+  }
+</script>

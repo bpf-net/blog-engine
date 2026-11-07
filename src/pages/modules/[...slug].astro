@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import CopyCommand from '../../components/CopyCommand.astro';
 import { getModules, type ModuleEntry } from '../../lib/modules';
 
 export async function getStaticPaths() {
@@ -46,9 +47,19 @@ const isGitHub = !!data.repo && /^https:\/\/github\.com\//.test(data.repo);
         </div>
       )}
     </header>
-    {hasBody && (
-      <div class="prose module-page-body">
-        <Content />
+    {(data.install || hasBody) && (
+      <div class="module-page-main">
+        {data.install && (
+          <section aria-labelledby="h-install">
+            <h2 id="h-install">Installation</h2>
+            <CopyCommand command={data.install} />
+          </section>
+        )}
+        {hasBody && (
+          <div class="prose">
+            <Content />
+          </div>
+        )}
       </div>
     )}
   </article>
