@@ -1,4 +1,4 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { CONTENT_DIR } from './lib/site';
@@ -23,6 +23,8 @@ const blog = defineCollection({
     tags: z.array(tag).default([]),
     /** Short summary shown in a box above the post body; `code` in backticks is supported. */
     tldr: z.string().optional(),
+    /** Id of a module (file name in modules/) shown as "Related module" next to the post. */
+    module: reference('modules').optional(),
   }),
 });
 

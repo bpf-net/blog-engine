@@ -1,0 +1,17 @@
+---
+import { moduleHref, type ModuleEntry } from '../lib/modules';
+
+interface Props {
+  module: ModuleEntry;
+}
+
+const { module: mod } = Astro.props;
+const meta = [mod.data.platform, mod.data.status].filter(Boolean).join(' · ');
+---
+<div class="related">
+  <p class="aside-label">Related module</p>
+  <a href={moduleHref(mod)} class="related-card">
+    <span class="related-card-title">{mod.data.title}</span>
+    {meta && <span class="related-card-meta">{meta}</span>}
+  </a>
+</div>

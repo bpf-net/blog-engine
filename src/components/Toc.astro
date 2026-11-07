@@ -1,0 +1,37 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+---
+<nav class="toc" aria-labelledby="toc-label">
+  <p id="toc-label" class="aside-label">In this post</p>
+  <ul>
+    {headings.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+  </ul>
+</nav>
+
+<script>
+  // Highlight the section being read: the last heading that has scrolled past the top.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.toc a')];
+  const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+  let queued = false;
+  const update = () => {
+    queued = false;
+    let current = 0;
+    targets.forEach((el, i) => {
+      if (el && el.getBoundingClientRect().top < 120) current = i;
+    });
+    links.forEach((a, i) => (i === current ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+  };
+  addEventListener('scroll', () => {
+    if (!queued) {
+      queued = true;
+      requestAnimationFrame(update);
+    }
+  }, { passive: true });
+  update();
+</script>

@@ -31,6 +31,7 @@ Frontmatter (validated; an invalid post fails the build):
 | `pubDate` | date, required |
 | `tags` | list, optional — `[magento2, open-source]`: letters, digits, hyphens, no `#` |
 | `tldr` | string, optional — summary box above the body; `` `code` `` in backticks, no other markdown |
+| `module` | string, optional — id of a module (file name in `modules/`), shown as "Related module" next to the post; an unknown id fails the build |
 | `draft` | boolean, default `false` — shown in `astro dev` with a "draft" label, excluded from the build |
 
 ## Navigation
@@ -135,6 +136,12 @@ Optional `callout` in `site.json` adds a card at the bottom of the home page (be
 
 Only `title` is required. `id` (default `callout`) is the section's anchor, so a nav link can point at `/#about`.
 
+## Post sidebar
+
+A post with at least two `##` headings gets an "In this post" table of contents in a sticky sidebar; a small
+script highlights the section being read (without JS the links still work). The sidebar also shows the
+`module` card. Below 960px the table of contents is hidden and the module card moves under the post.
+
 ## Pages
 
 - `/` — blog title and post list (date, title, description), newest first.
@@ -161,8 +168,9 @@ import Game from '@components/Game.astro';
 | `poster` | — | background image URL for the launch button |
 | `threads` | `false` | `true` → only a link opening the game in a new tab (threaded games need COOP/COEP on the top-level page) |
 
-The iframe is created only after clicking "Play"; the small script is the only JS on the site and is included
-only in posts that use the component. Games are not part of this build — locally the iframe shows a 404,
+The iframe is created only after clicking "Play"; its small script is included only in posts that use the
+component. The only other script is the table-of-contents highlighter (see Post sidebar); every other page
+ships no JS. Games are not part of this build — locally the iframe shows a 404,
 which is expected.
 
 ## Styling

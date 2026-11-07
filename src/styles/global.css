@@ -244,7 +244,22 @@ img { max-width: 100%; height: auto; }
 }
 .post-meta .draft-label { margin-left: 0; }
 
-.prose { max-width: 720px; margin-top: 48px; font-size: 18px; line-height: 1.75; color: var(--fg-prose); }
+.post-body { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px; margin-top: 48px; }
+.prose { flex: 999 1 560px; min-width: 0; max-width: 720px; font-size: 18px; line-height: 1.75; color: var(--fg-prose); }
+.prose h2, .prose h3 { scroll-margin-top: 24px; }
+
+/* Post aside: table of contents + related module */
+.post-aside { flex: 1 1 220px; min-width: 0; align-self: stretch; font-family: var(--font-mono); font-size: 14px; }
+.post-aside-inner { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 32px; }
+.aside-label { margin: 0 0 12px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.toc ul { margin: 0; padding: 0; list-style: none; border-left: 1px solid var(--border); }
+.toc a { display: block; margin-left: -1px; padding: 8px 0 8px 16px; border-left: 2px solid transparent; color: var(--fg-soft); text-decoration: none; }
+.toc a:hover { color: var(--fg); }
+.toc a[aria-current] { color: var(--accent); border-left-color: var(--accent); }
+.related-card { display: block; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; color: var(--fg); text-decoration: none; }
+.related-card:hover { border-color: var(--border-strong); color: var(--fg); }
+.related-card-title { display: block; font-weight: 700; overflow-wrap: anywhere; }
+.related-card-meta { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
 .prose > :first-child { margin-top: 0; }
 .prose .tldr { margin: 0 0 32px; padding: 20px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
 .prose .tldr-label { margin: 0 0 6px; font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -358,6 +373,12 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
 .game-fullscreen a { display: inline-flex; align-items: center; gap: 6px; padding: 10px 0; color: var(--game); text-decoration: none; }
 .game-fullscreen a:hover { color: var(--game-hover); }
 
+@media (max-width: 960px) {
+  .toc { display: none; }
+  .post-body { gap: 32px; }
+  .post-aside-inner { position: static; }
+}
+
 @media (max-width: 720px) {
   .container { padding-left: 20px; padding-right: 20px; }
   .site-header-inner { padding-top: 12px; padding-bottom: 12px; }
@@ -376,7 +397,8 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
   .breadcrumb { margin-top: 32px; }
   .post-header h1 { font-size: 34px; }
   .post-lead { font-size: 18px; }
-  .prose { margin-top: 36px; font-size: 17px; }
+  .post-body { margin-top: 36px; }
+  .prose { font-size: 17px; }
   pre { font-size: 13px; }
   .not-found h1 { font-size: 88px; }
   .game { aspect-ratio: auto !important; min-height: 260px; }

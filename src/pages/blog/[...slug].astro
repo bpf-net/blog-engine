@@ -1,8 +1,10 @@
 ---
-import { render } from 'astro:content';
+import { render, getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Tags from '../../components/Tags.astro';
 import Tldr from '../../components/Tldr.astro';
+import Toc from '../../components/Toc.astro';
+import RelatedModule from '../../components/RelatedModule.astro';
 import { getPosts, formatDate, type Post } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -15,7 +17,12 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+// The table of contents (and its small script) only on posts with at least two sections.
+const tocHeadings = headings.filter((h) => h.depth === 2);
+const showToc = tocHeadings.length >= 2;
+const related = post.data.module ? await getEntry(post.data.module) : undefined;
+const hasAside = showToc || !!related;
 ---
 <Base title={post.data.title} description={post.data.description}>
   <p class="breadcrumb"><a href="/">~</a> / blog / {post.id}</p>
@@ -29,9 +36,19 @@ const { Content } = await render(post);
         {post.data.draft && <span class="draft-label">draft</span>}
       </p>
     </header>
-    <div class="prose">
-      {post.data.tldr && <Tldr text={post.data.tldr} />}
-      <Content />
+    <div class:list={['post-body', { 'has-aside': hasAside }]}>
+      <div class="prose">
+        {post.data.tldr && <Tldr text={post.data.tldr} />}
+        <Content />
+      </div>
+      {hasAside && (
+        <aside class="post-aside" aria-label="About this post">
+          <div class="post-aside-inner">
+            {showToc && <Toc headings={tocHeadings} />}
+            {related && <RelatedModule module={related} />}
+          </div>
+        </aside>
+      )}
     </div>
   </article>
 </Base>
