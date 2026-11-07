@@ -16,7 +16,7 @@ path once, in `src/lib/site.ts`, and that same path is used by `astro.config.mjs
 
 | Item | Rule |
 | --- | --- |
-| `site.json` | `url`, `title`, `author`, `lang`, `nav`, `footerLinks`, `hero`, `tagTones`, `modules`; missing file or field = defaults |
+| `site.json` | `url`, `title`, `author`, `lang`, `nav`, `footerLinks`, `hero`, `tagTones`, `modules`, `callout`; missing file or field = defaults |
 | Single-file post | `2026-11-slug.md` or `.mdx` → `/blog/2026-11-slug/` |
 | Folder post | `2026-11-slug/index.md(x)` + images next to it, linked relatively (`![](./image.png)`) |
 | `_anything` | any file or folder starting with `_` is ignored (templates, notes) |
@@ -118,6 +118,21 @@ The section heading defaults to "Modules"; `site.json` can change it and add a l
 ```json
 "modules": { "title": "Magento modules", "link": { "label": "github.com/you", "href": "https://github.com/you" } }
 ```
+
+## Callout
+
+Optional `callout` in `site.json` adds a card at the bottom of the home page (below modules):
+
+```json
+"callout": {
+  "id": "about",
+  "title": "Want to work together?",
+  "text": "One or two sentences.",
+  "button": { "label": "Get in touch", "href": "mailto:you@example.com" }
+}
+```
+
+Only `title` is required. `id` (default `callout`) is the section's anchor, so a nav link can point at `/#about`.
 
 ## Pages
 

@@ -1,0 +1,19 @@
+---
+import type { Callout } from '../lib/site';
+
+interface Props {
+  callout: Callout;
+}
+
+const { callout } = Astro.props;
+const id = callout.id ?? 'callout';
+---
+<section id={id} class="home-section callout-section" aria-labelledby={`h-${id}`}>
+  <div class="callout">
+    <div class="callout-main">
+      <h2 id={`h-${id}`}>{callout.title}</h2>
+      {callout.text && <p>{callout.text}</p>}
+    </div>
+    {callout.button && <a href={callout.button.href} class="btn btn-primary">{callout.button.label}</a>}
+  </div>
+</section>

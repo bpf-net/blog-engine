@@ -28,6 +28,16 @@ export interface SiteConfig {
   tagTones: Record<string, Tone>;
   /** Heading and optional header link of the home page modules section. */
   modules: SectionConfig;
+  /** Optional card at the bottom of the home page (e.g. "hire me"). */
+  callout?: Callout;
+}
+
+export interface Callout {
+  /** Anchor id, so a nav link can point at "/#<id>". Default "callout". */
+  id?: string;
+  title: string;
+  text?: string;
+  button?: NavLink;
 }
 
 export interface SectionConfig {
@@ -125,6 +135,21 @@ function validateSection(section: unknown, field: string, fallback: SectionConfi
   return { ...fallback, ...(section as Partial<SectionConfig>) };
 }
 
+function validateCallout(callout: unknown, file: string): Callout | undefined {
+  if (callout === undefined) return undefined;
+  const ok =
+    isObj(callout) &&
+    typeof callout.title === 'string' &&
+    ['id', 'text'].every((k) => callout[k] === undefined || typeof callout[k] === 'string') &&
+    (callout.id === undefined || /^[A-Za-z][\w-]*$/.test(callout.id as string)) &&
+    (callout.button === undefined ||
+      (isObj(callout.button) && typeof callout.button.label === 'string' && typeof callout.button.href === 'string'));
+  if (!ok) {
+    throw new Error(`${file}: "callout" must be { "title": string, "id"?: string, "text"?: string, "button"?: { "label", "href" } }`);
+  }
+  return callout as unknown as Callout;
+}
+
 export function loadSiteConfig(): SiteConfig {
   const file = path.join(CONTENT_DIR, 'site.json');
   if (!fs.existsSync(file)) return { ...defaults };
@@ -137,5 +162,6 @@ export function loadSiteConfig(): SiteConfig {
     hero: validateHero(data.hero, file),
     tagTones: validateTagTones(data.tagTones, file),
     modules: validateSection(data.modules, 'modules', defaults.modules, file),
+    callout: validateCallout(data.callout, file),
   };
 }

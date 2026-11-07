@@ -4,10 +4,11 @@ import Hero from '../components/Hero.astro';
 import Tags from '../components/Tags.astro';
 import GameCards from '../components/GameCards.astro';
 import ModuleCards from '../components/ModuleCards.astro';
+import Callout from '../components/Callout.astro';
 import { getPosts, formatDate } from '../lib/posts';
 import { loadSiteConfig } from '../lib/site';
 
-const { hero } = loadSiteConfig();
+const { hero, callout } = loadSiteConfig();
 const posts = await getPosts();
 // With a hero, its headline is the page's h1 and the post list heading drops to h2.
 const ListHeading = hero ? 'h2' : 'h1';
@@ -42,4 +43,5 @@ const ListHeading = hero ? 'h2' : 'h1';
   </section>
   <GameCards />
   <ModuleCards />
+  {callout && <Callout callout={callout} />}
 </Base>

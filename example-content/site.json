@@ -74,5 +74,14 @@
       "label": "github.com",
       "href": "https://github.com/"
     }
+  },
+  "callout": {
+    "id": "about",
+    "title": "Want to work together?",
+    "text": "A card at the bottom of the home page, set in site.json. Leave it out to hide it.",
+    "button": {
+      "label": "Get in touch",
+      "href": "mailto:hello@example.com"
+    }
   }
 }
