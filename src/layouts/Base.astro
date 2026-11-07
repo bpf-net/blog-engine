@@ -15,6 +15,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 // "bpf.dev" → "bpf" + accented ".dev"; a title without a dot is shown whole.
 const dot = site.title.lastIndexOf('.');
 const [logoName, logoSuffix] = dot > 0 ? [site.title.slice(0, dot), site.title.slice(dot)] : [site.title, ''];
+
+// A link is current on its exact path; section links ("/games/") also on pages below them.
+const path = Astro.url.pathname;
+const isCurrent = (href: string) =>
+  href.startsWith('/') && (path === href || (href !== '/' && href.endsWith('/') && path.startsWith(href)));
 ---
 <!doctype html>
 <html lang={site.lang}>
@@ -34,6 +39,15 @@ const [logoName, logoSuffix] = dot > 0 ? [site.title.slice(0, dot), site.title.s
     <header class="site-header">
       <div class="container site-header-inner">
         <a href="/" class="logo">{logoName}{logoSuffix && <span class="accent">{logoSuffix}</span>}<span class="accent" aria-hidden="true">_</span></a>
+        {site.nav.length > 0 && (
+          <nav aria-label="Main navigation">
+            <ul class="site-nav">
+              {site.nav.map((link) => (
+                <li><a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a></li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </div>
     </header>
     <main class="container">

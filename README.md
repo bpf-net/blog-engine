@@ -16,7 +16,7 @@ path once, in `src/lib/site.ts`, and that same path is used by `astro.config.mjs
 
 | Item | Rule |
 | --- | --- |
-| `site.json` | `url`, `title`, `author`, `lang`; missing file = defaults |
+| `site.json` | `url`, `title`, `author`, `lang`, `nav`; missing file or field = defaults |
 | Single-file post | `2026-11-slug.md` or `.mdx` → `/blog/2026-11-slug/` |
 | Folder post | `2026-11-slug/index.md(x)` + images next to it, linked relatively (`![](./image.png)`) |
 | `_anything` | any file or folder starting with `_` is ignored (templates, notes) |
@@ -28,7 +28,22 @@ Frontmatter (validated; an invalid post fails the build):
 | `title` | string, required |
 | `description` | string, required (post list + meta description) |
 | `pubDate` | date, required |
-| `draft` | boolean, default `false` — shown in `astro dev` with a "szkic" label, excluded from the build |
+| `draft` | boolean, default `false` — shown in `astro dev` with a "draft" label, excluded from the build |
+
+## Navigation
+
+Header links come from `nav` in `site.json`, in order; without it the header shows only the logo.
+
+```json
+"nav": [
+  { "label": "posts", "href": "/" },
+  { "label": "games", "href": "/games/" },
+  { "label": "rss", "href": "/rss.xml" }
+]
+```
+
+A link is marked current (`aria-current="page"`, accent colour) on its exact path; a link ending in `/`
+other than `/` is also current on every page below it. An invalid `nav` fails the build.
 
 ## Pages
 
@@ -56,7 +71,7 @@ import Game from '@components/Game.astro';
 | `poster` | — | background image URL for the launch button |
 | `threads` | `false` | `true` → only a link opening the game in a new tab (threaded games need COOP/COEP on the top-level page) |
 
-The iframe is created only after clicking "▶ Graj"; the small script is the only JS on the site and is included
+The iframe is created only after clicking "Play"; the small script is the only JS on the site and is included
 only in posts that use the component. Games are not part of this build — locally the iframe shows a 404,
 which is expected.
 

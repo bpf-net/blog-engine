@@ -7,10 +7,10 @@ const posts = await getPosts();
 <Base>
   <section class="home" aria-labelledby="h-posts">
     <div class="section-head">
-      <h1 id="h-posts">Najnowsze wpisy</h1>
+      <h1 id="h-posts">Latest posts</h1>
     </div>
     {posts.length === 0 ? (
-      <p class="empty">Nie ma jeszcze żadnych wpisów.</p>
+      <p class="empty">No posts yet.</p>
     ) : (
       <ul class="post-list">
         {posts.map((post) => (
@@ -20,7 +20,7 @@ const posts = await getPosts();
               <span>
                 <span class="post-row-title">
                   {post.data.title}
-                  {post.data.draft && <span class="draft-label">szkic</span>}
+                  {post.data.draft && <span class="draft-label">draft</span>}
                 </span>
                 <span class="post-row-desc">{post.data.description}</span>
               </span>

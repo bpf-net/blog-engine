@@ -18,18 +18,35 @@ export interface SiteConfig {
   title: string;
   author: string;
   lang: string;
+  /** Header navigation links, in order. Empty = no navigation. */
+  nav: NavLink[];
+}
+
+export interface NavLink {
+  label: string;
+  href: string;
 }
 
 const defaults: SiteConfig = {
   url: 'http://localhost:4321',
   title: 'Blog',
-  author: 'Autor',
-  lang: 'pl',
+  author: 'Author',
+  lang: 'en',
+  nav: [],
 };
+
+function validateNav(nav: unknown, file: string): NavLink[] {
+  if (nav === undefined) return [];
+  const ok =
+    Array.isArray(nav) &&
+    nav.every((l) => l && typeof l === 'object' && typeof l.label === 'string' && typeof l.href === 'string');
+  if (!ok) throw new Error(`${file}: "nav" must be an array of { "label": string, "href": string }`);
+  return nav as NavLink[];
+}
 
 export function loadSiteConfig(): SiteConfig {
   const file = path.join(CONTENT_DIR, 'site.json');
   if (!fs.existsSync(file)) return { ...defaults };
   const data = JSON.parse(fs.readFileSync(file, 'utf8')) as Partial<SiteConfig>;
-  return { ...defaults, ...data };
+  return { ...defaults, ...data, nav: validateNav(data.nav, file) };
 }

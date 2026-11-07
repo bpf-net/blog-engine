@@ -23,7 +23,7 @@ const { Content } = await render(post);
       <p class="post-lead">{post.data.description}</p>
       <p class="post-meta">
         <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-        {post.data.draft && <span class="draft-label">szkic</span>}
+        {post.data.draft && <span class="draft-label">draft</span>}
       </p>
     </header>
     <div class="prose">

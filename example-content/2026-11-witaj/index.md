@@ -1,15 +1,15 @@
 ---
-title: Witaj na blogu
-description: Pierwszy wpis z obrazkiem leżącym obok pliku i blokiem kodu.
+title: Welcome to the blog
+description: The first post, with an image next to the file and a code block.
 pubDate: 2026-11-01
 ---
 
-To jest wpis folderowy: plik `index.md` i obrazek w tym samym katalogu.
+This is a folder post: an `index.md` file and an image in the same directory.
 
-![Gradient testowy](./obrazek.png)
+![Test gradient](./obrazek.png)
 
 ```ts
 export function greet(name: string): string {
-  return `Cześć, ${name}!`;
+  return `Hello, ${name}!`;
 }
 ```

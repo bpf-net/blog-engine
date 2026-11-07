@@ -1,6 +1,10 @@
 {
   "url": "https://example.com",
-  "title": "Przykładowy blog",
-  "author": "Jan Kowalski",
-  "lang": "pl"
+  "title": "example.dev",
+  "author": "Jane Doe",
+  "lang": "en",
+  "nav": [
+    { "label": "posts", "href": "/" },
+    { "label": "github", "href": "https://github.com/" }
+  ]
 }
