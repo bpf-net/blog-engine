@@ -3,6 +3,8 @@ title: Welcome to the blog
 description: The first post, with an image next to the file and a code block.
 pubDate: 2026-11-01
 tags: [astro, images]
+cover: ./obrazek.png
+coverAlt: A blue to pink gradient
 module: example-module
 tldr: A folder post keeps `index.md` and its images together; link them relatively, e.g. `./obrazek.png`.
 ---

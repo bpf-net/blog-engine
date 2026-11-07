@@ -1,18 +1,23 @@
 ---
 import { loadSiteConfig } from '../lib/site';
+import { tagHref } from '../lib/posts';
 
 interface Props {
   tags?: string[];
   class?: string;
+  /** Link each tag to its /tags/<tag>/ page (not inside another link). */
+  link?: boolean;
 }
 
 // The schema defaults tags to [], but entries cached by a dev server started before
 // the field existed have none.
-const { tags = [], class: className } = Astro.props;
+const { tags = [], class: className, link = false } = Astro.props;
 const { tagTones } = loadSiteConfig();
 ---
 {tags.length > 0 && (
   <ul class:list={['tags', className]} aria-label="Tags">
-    {tags.map((tag) => <li class={`tone-${tagTones[tag] ?? 'accent'}`}>#{tag}</li>)}
+    {tags.map((tag) => (
+      <li class={`tone-${tagTones[tag] ?? 'accent'}`}>{link ? <a href={tagHref(tag)}>#{tag}</a> : `#${tag}`}</li>
+    ))}
   </ul>
 )}

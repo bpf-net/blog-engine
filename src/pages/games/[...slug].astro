@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import { getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import GamePlayer from '../../components/GamePlayer.astro';
 import { getGames, gameSrc, type GameEntry } from '../../lib/games';
@@ -19,6 +20,7 @@ const { data } = game;
 const { Content } = await render(game);
 const hasBody = !!game.body?.trim();
 const devlog = await getDevlog(game.id);
+const ogImage = data.cover ? (await getImage({ src: data.cover, width: 1200, format: 'jpg' })).src : undefined;
 const info = [
   ['Engine', data.engine],
   ['Platform', data.platform],
@@ -28,7 +30,7 @@ const info = [
 ].filter((row): row is [string, string, boolean?] => !!row[1]);
 const hasAside = info.length > 0 || !!data.feedback;
 ---
-<Base title={data.title} description={data.description}>
+<Base title={data.title} description={data.description} image={ogImage}>
   <p class="breadcrumb"><a href="/">~</a> / games / {game.id}</p>
   <article class="game-page">
     <header class="game-page-header">

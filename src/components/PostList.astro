@@ -1,0 +1,31 @@
+---
+import Tags from './Tags.astro';
+import { formatDate, type Post } from '../lib/posts';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+{posts.length === 0 ? (
+  <p class="empty">No posts yet.</p>
+) : (
+  <ul class="post-list">
+    {posts.map((post) => (
+      <li>
+        <a href={`/blog/${post.id}/`} class="post-row">
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          <span>
+            <span class="post-row-title">
+              {post.data.title}
+              {post.data.draft && <span class="draft-label">draft</span>}
+            </span>
+            <span class="post-row-desc">{post.data.description}</span>
+          </span>
+          <Tags tags={post.data.tags} class="post-row-tags" />
+        </a>
+      </li>
+    ))}
+  </ul>
+)}

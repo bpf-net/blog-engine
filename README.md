@@ -16,7 +16,7 @@ path once, in `src/lib/site.ts`, and that same path is used by `astro.config.mjs
 
 | Item | Rule |
 | --- | --- |
-| `site.json` | `url`, `title`, `author`, `lang`, `nav`, `footerLinks`, `hero`, `tagTones`, `modules`, `callout`; missing file or field = defaults |
+| `site.json` | `url`, `title`, `description`, `author`, `lang`, `nav`, `footerLinks`, `hero`, `tagTones`, `modules`, `callout`; missing file or field = defaults |
 | Single-file post | `2026-11-slug.md` or `.mdx` → `/blog/2026-11-slug/` |
 | Folder post | `2026-11-slug/index.md(x)` + images next to it, linked relatively (`![](./image.png)`) |
 | `_anything` | any file or folder starting with `_` is ignored (templates, notes) |
@@ -29,6 +29,8 @@ Frontmatter (validated; an invalid post fails the build):
 | `title` | string, required |
 | `description` | string, required (post list + meta description) |
 | `pubDate` | date, required |
+| `cover` | image, optional — relative path (`./cover.jpg`), shown above the body and used as the link-preview image |
+| `coverAlt` | string, optional — alt text for the cover |
 | `tags` | list, optional — `[magento2, open-source]`: letters, digits, hyphens, no `#` |
 | `tldr` | string, optional — summary box above the body; `` `code` `` in backticks, no other markdown |
 | `game` | string, optional — id of a game (file name in `games/`); the post appears in that game's devlog; an unknown id fails the build |
@@ -165,6 +167,17 @@ Only `title` is required. `id` (default `callout`) is the section's anchor, so a
 A post with at least two `##` headings gets an "In this post" table of contents in a sticky sidebar; a small
 script highlights the section being read (without JS the links still work). The sidebar also shows the
 `module` card. Below 960px the table of contents is hidden and the module card moves under the post.
+
+## Feeds, sitemap, link previews
+
+- `/rss.xml` — RSS 2.0 with every published post (title, link, date, description, tags); the channel uses
+  `site.json` `title` and `description`. Every page links to it in `<head>`.
+- `/sitemap.xml` — home, posts, games, modules and tag pages; `/robots.txt` points at it.
+- Open Graph / Twitter meta on every page; posts are `article` with date and tags. A post `cover` (or a game
+  `cover`) becomes the preview image, resized to 1200px JPEG. The home page uses `site.json` `description`.
+- `/tags/` lists all tags with post counts and `/tags/<tag>/` lists the posts; tags on a post page link there.
+
+All absolute URLs come from `site.json` `url`.
 
 ## Pages
 

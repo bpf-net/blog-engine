@@ -14,11 +14,14 @@ const blog = defineCollection({
     pattern: ['**/*.{md,mdx}', '!**/_*', '!**/_*/**', ...RESERVED_DIRS.map((d) => `!${d}/**`)],
     base: CONTENT_DIR,
   }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
     draft: z.boolean().default(false),
+    /** Cover image next to the post (./cover.jpg): shown above the body and used for link previews. */
+    cover: image().optional(),
+    coverAlt: z.string().optional(),
     // Written without "#": letters, digits and hyphens, e.g. [magento2, open-source].
     tags: z.array(tag).default([]),
     /** Short summary shown in a box above the post body; `code` in backticks is supported. */

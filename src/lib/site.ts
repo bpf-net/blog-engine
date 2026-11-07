@@ -16,6 +16,8 @@ export const CONTENT_DIR = process.env.CONTENT_DIR
 export interface SiteConfig {
   url: string;
   title: string;
+  /** Site description: home page meta/Open Graph and the RSS channel. */
+  description?: string;
   author: string;
   lang: string;
   /** Header navigation links, in order. Empty = no navigation. */

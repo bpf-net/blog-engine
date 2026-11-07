@@ -1,5 +1,6 @@
 ---
 import { render, getEntry } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Tags from '../../components/Tags.astro';
 import Tldr from '../../components/Tldr.astro';
@@ -29,12 +30,21 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
 const showToc = tocHeadings.length >= 2;
 const related = post.data.module ? await getEntry(post.data.module) : undefined;
 const hasAside = showToc || !!related;
+// Link previews get a 1200px JPEG (not every scraper reads WebP).
+const ogImage = post.data.cover ? (await getImage({ src: post.data.cover, width: 1200, format: 'jpg' })).src : undefined;
 ---
-<Base title={post.data.title} description={post.data.description}>
+<Base
+  title={post.data.title}
+  description={post.data.description}
+  ogType="article"
+  image={ogImage}
+  publishedTime={post.data.pubDate}
+  tags={post.data.tags}
+>
   <p class="breadcrumb"><a href="/">~</a> / blog / {post.id}</p>
   <article class="post">
     <header class="post-header">
-      <Tags tags={post.data.tags} class="post-tags" />
+      <Tags tags={post.data.tags} class="post-tags" link />
       <h1>{post.data.title}</h1>
       <p class="post-lead">{post.data.description}</p>
       <p class="post-meta">
@@ -42,6 +52,17 @@ const hasAside = showToc || !!related;
         {post.data.draft && <span class="draft-label">draft</span>}
       </p>
     </header>
+    {post.data.cover && (
+      <Image
+        src={post.data.cover}
+        alt={post.data.coverAlt ?? ''}
+        class="post-cover"
+        widths={[480, 760, 1140, 1520]}
+        sizes="(max-width: 808px) calc(100vw - 40px), 760px"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
     <div class:list={['post-body', { 'has-aside': hasAside }]}>
       <div class="prose">
         {post.data.tldr && <Tldr text={post.data.tldr} />}

@@ -5,12 +5,20 @@ import { loadSiteConfig } from '../lib/site';
 interface Props {
   title?: string;
   description?: string;
+  /** Open Graph: "article" for posts, "website" otherwise. */
+  ogType?: 'website' | 'article';
+  /** Preview image path or URL (ideally 1200×630). */
+  image?: string;
+  publishedTime?: Date;
+  tags?: string[];
 }
 
 const site = loadSiteConfig();
-const { title, description } = Astro.props;
+const { title, ogType = 'website', image, publishedTime, tags = [] } = Astro.props;
+const description = Astro.props.description ?? site.description;
 const pageTitle = title ? `${title} · ${site.title}` : site.title;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = image ? new URL(image, Astro.site).href : undefined;
 
 // "bpf.dev" → "bpf" + accented ".dev"; a title without a dot is shown whole.
 const dot = site.title.lastIndexOf('.');
@@ -31,6 +39,17 @@ const isCurrent = (href: string) =>
     <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
+    <meta property="og:site_name" content={site.title} />
+    <meta property="og:title" content={title ?? site.title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content={site.lang} />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {tags.map((t) => <meta property="article:tag" content={t} />)}
+    <meta name="twitter:card" content={imageUrl ? 'summary_large_image' : 'summary'} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin />

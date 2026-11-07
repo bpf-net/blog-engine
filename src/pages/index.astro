@@ -1,11 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import Tags from '../components/Tags.astro';
+import PostList from '../components/PostList.astro';
 import GameCards from '../components/GameCards.astro';
 import ModuleCards from '../components/ModuleCards.astro';
 import Callout from '../components/Callout.astro';
-import { getPosts, formatDate } from '../lib/posts';
+import { getPosts } from '../lib/posts';
 import { loadSiteConfig } from '../lib/site';
 
 const { hero, callout } = loadSiteConfig();
@@ -19,27 +19,7 @@ const ListHeading = hero ? 'h2' : 'h1';
     <div class="section-head">
       <ListHeading id="h-posts">Latest posts</ListHeading>
     </div>
-    {posts.length === 0 ? (
-      <p class="empty">No posts yet.</p>
-    ) : (
-      <ul class="post-list">
-        {posts.map((post) => (
-          <li>
-            <a href={`/blog/${post.id}/`} class="post-row">
-              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-              <span>
-                <span class="post-row-title">
-                  {post.data.title}
-                  {post.data.draft && <span class="draft-label">draft</span>}
-                </span>
-                <span class="post-row-desc">{post.data.description}</span>
-              </span>
-              <Tags tags={post.data.tags} class="post-row-tags" />
-            </a>
-          </li>
-        ))}
-      </ul>
-    )}
+    <PostList posts={posts} />
   </section>
   <GameCards />
   <ModuleCards />
