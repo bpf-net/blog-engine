@@ -15,3 +15,13 @@ export function greet(name: string): string {
   return `Hello, ${name}!`;
 }
 ```
+
+With a file name above the block:
+
+```php title="app/etc/config-local.php"
+<?php
+// kept out of the repository
+return [
+    'modules' => ['Magento_TwoFactorAuth' => 0],
+];
+```

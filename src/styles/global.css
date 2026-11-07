@@ -300,6 +300,18 @@ pre[data-language]::before {
 }
 pre[data-language="plaintext"]::before, pre[data-language="text"]::before { display: none; }
 
+/* Code block with a file name: ```php title="path/to/file.php" */
+.code-figure, .prose .code-figure { margin: 0 0 28px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.code-figure-caption {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono); font-size: 13px; line-height: 1.4; color: var(--muted);
+}
+.code-figure-title { min-width: 0; overflow-wrap: anywhere; }
+.code-figure-lang { flex-shrink: 0; }
+.code-figure pre { margin: 0; border: 0; border-radius: 0; }
+.code-figure pre::before { display: none; }
+
 /* 404 */
 .not-found { padding: 96px 0 40px; }
 .not-found h1 { margin: 0; font-size: 120px; line-height: 1; color: var(--accent); letter-spacing: -0.03em; }

@@ -172,5 +172,7 @@ Dark-only theme in one `src/styles/global.css` (colours as CSS variables on `:ro
 - Fonts are self-hosted variable woff2 in `public/fonts/` (latin + latin-ext): Inter (text), Bricolage Grotesque
   (headings), JetBrains Mono (logo, dates, code). All under SIL OFL 1.1, licence files next to them.
 - Code is highlighted at build time by Shiki with the `bpf-dark` theme from `src/lib/shiki-theme.ts`;
-  highlighted blocks get a small language strip.
+  highlighted blocks get a small language strip. A file name goes after the language —
+  ```` ```php title="app/etc/config.php" ```` — and replaces the strip with a caption: file name left,
+  language right (`src/lib/shiki-code-title.ts`).
 - The logo is `site.title`; the part after the last dot is shown in the accent colour (`bpf.dev` → bpf**.dev**`_`).
