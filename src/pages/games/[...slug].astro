@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import GamePlayer from '../../components/GamePlayer.astro';
 import { getGames, gameSrc, type GameEntry } from '../../lib/games';
+import { getDevlog, formatDate } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const games = await getGames();
@@ -17,6 +18,7 @@ const { game } = Astro.props;
 const { data } = game;
 const { Content } = await render(game);
 const hasBody = !!game.body?.trim();
+const devlog = await getDevlog(game.id);
 ---
 <Base title={data.title} description={data.description}>
   <p class="breadcrumb"><a href="/">~</a> / games / {game.id}</p>
@@ -31,10 +33,44 @@ const hasBody = !!game.body?.trim();
       )}
     </header>
     <GamePlayer src={gameSrc(game)} title={data.title} caption={data.engine} width={data.width} height={data.height} threads={data.threads} />
-    {hasBody && (
-      <div class="prose game-page-body">
-        <Content />
-      </div>
-    )}
+    <div class="game-page-main">
+      {hasBody && (
+        <section aria-labelledby="h-about-game">
+          <h2 id="h-about-game">About the game</h2>
+          <div class="prose">
+            <Content />
+          </div>
+        </section>
+      )}
+      {data.controls.length > 0 && (
+        <section aria-labelledby="h-controls">
+          <h2 id="h-controls">Controls</h2>
+          <ul class="controls">
+            {data.controls.map((c) => (
+              <li>
+                <span class="controls-keys">{c.keys.map((k) => <kbd>{k}</kbd>)}</span>
+                <span class="controls-action">{c.action}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {devlog.length > 0 && (
+        <section aria-labelledby="h-devlog">
+          <h2 id="h-devlog">Devlog</h2>
+          <ol class="devlog">
+            {devlog.map((post, i) => (
+              <li>
+                <a href={`/blog/${post.id}/`} class="devlog-row">
+                  <span class="devlog-meta">#{i + 1} · {formatDate(post.data.pubDate)}</span>
+                  <span class="devlog-title">{post.data.title}</span>
+                  {post.data.draft && <span class="draft-label">draft</span>}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+    </div>
   </article>
 </Base>

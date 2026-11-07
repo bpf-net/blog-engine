@@ -25,6 +25,8 @@ const blog = defineCollection({
     tldr: z.string().optional(),
     /** Id of a module (file name in modules/) shown as "Related module" next to the post. */
     module: reference('modules').optional(),
+    /** Id of a game (file name in games/); the post is listed in that game's devlog. */
+    game: reference('games').optional(),
   }),
 });
 
@@ -46,6 +48,8 @@ const games = defineCollection({
       src: z.string().optional(),
       /** Threaded build (needs COOP/COEP): the page links to it in a new tab instead of embedding. */
       threads: z.boolean().default(false),
+      /** Shown as "Controls": e.g. [{ keys: [W, A, S, D], action: move the map }]. */
+      controls: z.array(z.object({ keys: z.array(z.string()).min(1), action: z.string() })).default([]),
       /** Player aspect ratio. */
       width: z.number().positive().default(16),
       height: z.number().positive().default(9),

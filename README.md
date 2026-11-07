@@ -31,6 +31,7 @@ Frontmatter (validated; an invalid post fails the build):
 | `pubDate` | date, required |
 | `tags` | list, optional — `[magento2, open-source]`: letters, digits, hyphens, no `#` |
 | `tldr` | string, optional — summary box above the body; `` `code` `` in backticks, no other markdown |
+| `game` | string, optional — id of a game (file name in `games/`); the post appears in that game's devlog; an unknown id fails the build |
 | `module` | string, optional — id of a module (file name in `modules/`), shown as "Related module" next to the post; an unknown id fails the build |
 | `draft` | boolean, default `false` — shown in `astro dev` with a "draft" label, excluded from the build |
 
@@ -88,8 +89,9 @@ They use the accent colour; `tagTones` in `site.json` colours individual tags wi
 Each game is a file in `CONTENT_DIR/games/` — `games/<id>.md` or `games/<id>/index.md` with a screenshot next to it.
 The home page shows them as cards in a "Games in the browser" section below the post list (hidden when there are none),
 and each game gets a page at `/games/<id>/`: title, description, status pill and a player — the build loads in an
-iframe only after "Launch game"; "stop" unloads it, the corner button goes full screen. The markdown body of the game
-file is rendered under the player. The player script is included only on game pages.
+iframe only after "Launch game"; "stop" unloads it, the corner button goes full screen. Under the player: "About the game" (the
+markdown body of the game file), "Controls" (`controls`) and "Devlog" — posts whose `game` field names this game,
+oldest first, numbered. Empty sections are hidden. The player script is included only on game pages.
 
 | Field | Type |
 | --- | --- |
@@ -101,6 +103,7 @@ file is rendered under the player. The player script is included only on game pa
 | `src` | string, optional — URL of the game build, default `/games/<id>/play/` |
 | `threads` | boolean, default `false` — threaded build (needs COOP/COEP): the page links to it in a new tab instead of embedding |
 | `width`, `height` | numbers, default `16`, `9` — player aspect ratio |
+| `controls` | list, optional — `[{ keys: [W, A, S, D], action: move }]`, keys shown as `<kbd>` |
 | `cta` | string, default `Play` — link text on the card |
 | `order` | number, optional — lower first; the rest by title |
 | `draft` | boolean, default `false` — like posts |
