@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import { getGames, gameHref } from '../lib/games';
+
+const games = await getGames();
+---
+{games.length > 0 && (
+  <section id="games" class="home-section" aria-labelledby="h-games">
+    <div class="section-head">
+      <h2 id="h-games">Games <span class="tone-amber">in the browser</span></h2>
+    </div>
+    <ul class="game-cards">
+      {games.map((game) => (
+        <li>
+          <a href={gameHref(game)} class="game-card">
+            <span class="game-card-shot">
+              {game.data.cover && (
+                <Image src={game.data.cover} alt="" width={640} widths={[320, 640]} sizes="(max-width: 720px) 100vw, 360px" />
+              )}
+            </span>
+            <span class="game-card-body">
+              {(game.data.engine || game.data.status || game.data.draft) && (
+                <span class="game-card-meta">
+                  {[game.data.engine, game.data.status, game.data.draft && 'draft'].filter(Boolean).join(' · ')}
+                </span>
+              )}
+              <span class="game-card-title">{game.data.title}</span>
+              <span class="game-card-desc">{game.data.description}</span>
+              <span class="game-card-cta">{game.data.cta} →</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}

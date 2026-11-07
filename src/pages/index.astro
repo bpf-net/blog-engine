@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Tags from '../components/Tags.astro';
+import GameCards from '../components/GameCards.astro';
 import { getPosts, formatDate } from '../lib/posts';
 import { loadSiteConfig } from '../lib/site';
 
@@ -38,4 +39,5 @@ const ListHeading = hero ? 'h2' : 'h1';
       </ul>
     )}
   </section>
+  <GameCards />
 </Base>

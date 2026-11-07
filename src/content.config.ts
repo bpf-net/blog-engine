@@ -3,19 +3,47 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { CONTENT_DIR } from './lib/site';
 
+/** Folders under CONTENT_DIR that hold other collections, not posts. */
+const RESERVED_DIRS = ['games'];
+
+const tag = z.string().regex(/^[\p{L}\p{N}][\p{L}\p{N}-]*$/u, 'tag: letters, digits and hyphens only, no "#" or spaces');
+
 const blog = defineCollection({
   // The first pattern alone would also pick up _template.md and _drafts/.
-  loader: glob({ pattern: ['**/*.{md,mdx}', '!**/_*', '!**/_*/**'], base: CONTENT_DIR }),
+  loader: glob({
+    pattern: ['**/*.{md,mdx}', '!**/_*', '!**/_*/**', ...RESERVED_DIRS.map((d) => `!${d}/**`)],
+    base: CONTENT_DIR,
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
     draft: z.boolean().default(false),
     // Written without "#": letters, digits and hyphens, e.g. [magento2, open-source].
-    tags: z
-      .array(z.string().regex(/^[\p{L}\p{N}][\p{L}\p{N}-]*$/u, 'tag: letters, digits and hyphens only, no "#" or spaces'))
-      .default([]),
+    tags: z.array(tag).default([]),
   }),
 });
 
-export const collections = { blog };
+const games = defineCollection({
+  loader: glob({ pattern: ['**/*.{md,mdx}', '!**/_*', '!**/_*/**'], base: `${CONTENT_DIR}/games` }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      /** Short tech line, e.g. "Godot · wasm". */
+      engine: z.string().optional(),
+      /** e.g. "prototype", "in progress". */
+      status: z.string().optional(),
+      /** Screenshot next to the file, e.g. ./cover.png (16:10 works best). */
+      cover: image().optional(),
+      /** Card link; defaults to the game itself at /games/<id>/. */
+      href: z.string().optional(),
+      /** Link text on the card. */
+      cta: z.string().default('Play'),
+      /** Lower first; games without it go last, by title. */
+      order: z.number().optional(),
+      draft: z.boolean().default(false),
+    }),
+});
+
+export const collections = { blog, games };

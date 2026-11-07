@@ -20,6 +20,7 @@ path once, in `src/lib/site.ts`, and that same path is used by `astro.config.mjs
 | Single-file post | `2026-11-slug.md` or `.mdx` → `/blog/2026-11-slug/` |
 | Folder post | `2026-11-slug/index.md(x)` + images next to it, linked relatively (`![](./image.png)`) |
 | `_anything` | any file or folder starting with `_` is ignored (templates, notes) |
+| `games/` | reserved for the games collection (below), never read as posts |
 
 Frontmatter (validated; an invalid post fails the build):
 
@@ -79,6 +80,24 @@ They use the accent colour; `tagTones` in `site.json` colours individual tags wi
 ```json
 "tagTones": { "gamedev": "amber", "graphql": "blue" }
 ```
+
+## Games
+
+Each game is a file in `CONTENT_DIR/games/` — `games/<id>.md` or `games/<id>/index.md` with a screenshot next to it.
+The home page shows them as cards in a "Games in the browser" section below the post list (hidden when there are none).
+
+| Field | Type |
+| --- | --- |
+| `title`, `description` | string, required |
+| `engine` | string, optional — tech line, e.g. `Godot · wasm` |
+| `status` | string, optional — e.g. `prototype` |
+| `cover` | image, optional — relative path, e.g. `./cover.png`; 16:10 fits best; without it a dotted placeholder |
+| `href` | string, optional — card link, default `/games/<id>/` (where the game build is served) |
+| `cta` | string, default `Play` — link text on the card |
+| `order` | number, optional — lower first; the rest by title |
+| `draft` | boolean, default `false` — like posts |
+
+The body of a game file is not used yet.
 
 ## Pages
 
