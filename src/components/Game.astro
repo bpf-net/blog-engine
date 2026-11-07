@@ -1,0 +1,38 @@
+---
+interface Props {
+  slug: string;
+  title?: string;
+  width?: number;
+  height?: number;
+  poster?: string;
+  threads?: boolean;
+}
+
+const { slug, title = slug, width = 960, height = 540, poster, threads = false } = Astro.props;
+const src = `/games/${slug}/`;
+---
+<figure class="game" style={`aspect-ratio: ${width} / ${height};`}>
+  {threads ? (
+    <a class="game-launch" href={src} target="_blank" rel="noopener" style={poster ? `background-image: url(${poster})` : undefined}>
+      <span>▶ Otwórz „{title}” w nowej karcie</span>
+    </a>
+  ) : (
+    <button type="button" class="game-launch" data-src={src} data-title={title} style={poster ? `background-image: url(${poster})` : undefined}>
+      <span>▶ Graj</span>
+    </button>
+  )}
+</figure>
+{!threads && <p class="game-fullscreen"><a href={src}>pełny ekran</a></p>}
+
+<script>
+  for (const button of document.querySelectorAll<HTMLButtonElement>('.game button.game-launch')) {
+    button.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = button.dataset.src!;
+      iframe.title = button.dataset.title ?? '';
+      iframe.allow = 'fullscreen; gamepad; autoplay';
+      button.replaceWith(iframe);
+      iframe.focus();
+    }, { once: true });
+  }
+</script>
