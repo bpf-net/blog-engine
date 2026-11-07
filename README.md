@@ -16,7 +16,7 @@ path once, in `src/lib/site.ts`, and that same path is used by `astro.config.mjs
 
 | Item | Rule |
 | --- | --- |
-| `site.json` | `url`, `title`, `author`, `lang`, `nav`, `footerLinks`, `hero`; missing file or field = defaults |
+| `site.json` | `url`, `title`, `author`, `lang`, `nav`, `footerLinks`, `hero`, `tagTones`; missing file or field = defaults |
 | Single-file post | `2026-11-slug.md` or `.mdx` → `/blog/2026-11-slug/` |
 | Folder post | `2026-11-slug/index.md(x)` + images next to it, linked relatively (`![](./image.png)`) |
 | `_anything` | any file or folder starting with `_` is ignored (templates, notes) |
@@ -28,6 +28,7 @@ Frontmatter (validated; an invalid post fails the build):
 | `title` | string, required |
 | `description` | string, required (post list + meta description) |
 | `pubDate` | date, required |
+| `tags` | list, optional — `[magento2, open-source]`: letters, digits, hyphens, no `#` |
 | `draft` | boolean, default `false` — shown in `astro dev` with a "draft" label, excluded from the build |
 
 ## Navigation
@@ -69,6 +70,15 @@ page's `<h1>` and the list heading drops to `<h2>`. The post list has the anchor
 Only `title` is required; `\n` in it breaks the line. The first button is primary. `terminal` is decorative
 (`aria-hidden`): `cmd` lines get a `$` prompt, `out` is plain text or spans with `tone`
 (`plain`, `muted`, `accent`, `amber`, `blue`); a prompt with a cursor is appended. An invalid `hero` fails the build.
+
+## Tags
+
+Tags are shown as `#tag` in the post list (right column) and above the post title; they are not links.
+They use the accent colour; `tagTones` in `site.json` colours individual tags with the hero's tones:
+
+```json
+"tagTones": { "gamedev": "amber", "graphql": "blue" }
+```
 
 ## Pages
 

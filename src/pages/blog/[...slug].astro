@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Tags from '../../components/Tags.astro';
 import { getPosts, formatDate, type Post } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -19,6 +20,7 @@ const { Content } = await render(post);
   <p class="breadcrumb"><a href="/">~</a> / blog / {post.id}</p>
   <article class="post">
     <header class="post-header">
+      <Tags tags={post.data.tags} class="post-tags" />
       <h1>{post.data.title}</h1>
       <p class="post-lead">{post.data.description}</p>
       <p class="post-meta">

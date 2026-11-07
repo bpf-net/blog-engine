@@ -137,7 +137,7 @@ img { max-width: 100%; height: auto; }
 .post-list { list-style: none; margin: 0; padding: 0; }
 .post-row {
   display: grid;
-  grid-template-columns: 140px minmax(0, 1fr);
+  grid-template-columns: 140px minmax(0, 1fr) 140px;
   gap: 24px;
   align-items: baseline;
   padding: 24px 12px;
@@ -150,6 +150,10 @@ img { max-width: 100%; height: auto; }
 .post-row time { font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
 .post-row-title { display: block; font-size: 21px; font-weight: 600; line-height: 1.35; }
 .post-row-desc { display: block; margin-top: 6px; color: var(--muted); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 0; list-style: none; font-family: var(--font-mono); font-size: 13px; }
+.post-row-tags { justify-content: flex-end; text-align: right; }
+.post-tags { margin-bottom: 20px; gap: 8px; }
 
 .draft-label {
   display: inline-block;
@@ -290,6 +294,7 @@ pre[data-language="plaintext"]::before, pre[data-language="text"]::before { disp
   .hero-text { font-size: 17px; }
   .section-head h1, .section-head h2 { font-size: 26px; }
   .post-row { grid-template-columns: 1fr; gap: 6px; padding: 20px 8px; }
+  .post-row-tags { justify-content: flex-start; text-align: left; }
   .breadcrumb { margin-top: 32px; }
   .post-header h1 { font-size: 34px; }
   .post-lead { font-size: 18px; }

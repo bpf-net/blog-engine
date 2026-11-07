@@ -24,6 +24,8 @@ export interface SiteConfig {
   footerLinks: NavLink[];
   /** Optional hero on the home page. */
   hero?: Hero;
+  /** Colour of individual tags (without "#"); others use the accent. */
+  tagTones: Record<string, Tone>;
 }
 
 export interface NavLink {
@@ -58,6 +60,7 @@ const defaults: SiteConfig = {
   lang: 'en',
   nav: [],
   footerLinks: [],
+  tagTones: {},
 };
 
 function validateLinks(links: unknown, field: string, file: string): NavLink[] {
@@ -95,6 +98,14 @@ function validateHero(hero: unknown, file: string): Hero | undefined {
   return h as unknown as Hero;
 }
 
+function validateTagTones(tones: unknown, file: string): Record<string, Tone> {
+  if (tones === undefined) return {};
+  if (!isObj(tones) || !Object.values(tones).every((t) => TONES.includes(t as string))) {
+    throw new Error(`${file}: "tagTones" must map tag → tone (${TONES.join(', ')})`);
+  }
+  return tones as Record<string, Tone>;
+}
+
 export function loadSiteConfig(): SiteConfig {
   const file = path.join(CONTENT_DIR, 'site.json');
   if (!fs.existsSync(file)) return { ...defaults };
@@ -105,5 +116,6 @@ export function loadSiteConfig(): SiteConfig {
     nav: validateLinks(data.nav, 'nav', file),
     footerLinks: validateLinks(data.footerLinks, 'footerLinks', file),
     hero: validateHero(data.hero, file),
+    tagTones: validateTagTones(data.tagTones, file),
   };
 }

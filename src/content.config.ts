@@ -11,6 +11,10 @@ const blog = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     draft: z.boolean().default(false),
+    // Written without "#": letters, digits and hyphens, e.g. [magento2, open-source].
+    tags: z
+      .array(z.string().regex(/^[\p{L}\p{N}][\p{L}\p{N}-]*$/u, 'tag: letters, digits and hyphens only, no "#" or spaces'))
+      .default([]),
   }),
 });
 

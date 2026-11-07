@@ -1,0 +1,16 @@
+---
+import { loadSiteConfig } from '../lib/site';
+
+interface Props {
+  tags: string[];
+  class?: string;
+}
+
+const { tags, class: className } = Astro.props;
+const { tagTones } = loadSiteConfig();
+---
+{tags.length > 0 && (
+  <ul class:list={['tags', className]} aria-label="Tags">
+    {tags.map((tag) => <li class={`tone-${tagTones[tag] ?? 'accent'}`}>#{tag}</li>)}
+  </ul>
+)}
